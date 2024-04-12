@@ -7,6 +7,9 @@ FROM python:3.12-slim AS base
 WORKDIR /app
 RUN apt update \
     && apt upgrade -y
+RUN groupadd --system --gid 1000 app_web \
+    && useradd --no-log-init --system -u 1000 --gid app_web --create-home app_web
+USER app_web
 
 FROM base AS develop
 ENV PYTHONUNBUFFERED 1
