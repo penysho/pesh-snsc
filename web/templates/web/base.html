@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>SNSC</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="{% static 'web/css/style.css' %}" />
+    <link rel="icon" href="{% static 'web/img/favicon.ico' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <header></header>
+      {% block content %} {% endblock %}
+      <footer></footer>
+    </div>
+  </body>
+</html>
