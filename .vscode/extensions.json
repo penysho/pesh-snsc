@@ -1,0 +1,47 @@
+{
+  "recommendations": [
+    // Rust
+    "rust-lang.rust-analyzer",
+    "serayuzgur.crates",
+    // Python
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "kevinrose.vsc-python-indent",
+    "njpwerner.autodocstring",
+    "donjayamanne.python-environment-manager",
+    "ms-python.isort",
+    "knowsuchagency.pdm-task-provider",
+    "mikoz.autoflake-extension",
+    // JavaScript
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss",
+    "vitest.explorer",
+    // TOML
+    "tamasfe.even-better-toml",
+    // YAML
+    "redhat.vscode-yaml",
+    // Graphql
+    "graphql.vscode-graphql",
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+    "bierner.markdown-mermaid",
+    "davidanson.vscode-markdownlint",
+    // AWS
+    "aws-scripting-guy.cform",
+    // Docker
+    "ms-azuretools.vscode-docker",
+    // Git
+    "mhutchie.git-graph",
+    // 共通
+    "ms-ceintl.vscode-language-pack-ja",
+    "visualstudioexptteam.vscodeintellicode",
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    "gruntfuggly.todo-tree",
+    "aaron-bond.better-comments",
+    "mikestead.dotenv",
+    "tombonnike.vscode-status-bar-format-toggle"
+  ]
+}

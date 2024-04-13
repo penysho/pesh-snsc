@@ -1,0 +1,97 @@
+{
+  "editor.rulers": [88],
+  "editor.lineNumbers": "on",
+  "editor.wordWrap": "on",
+  "editor.tabSize": 4,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 言語識別子の一覧
+  // https://code.visualstudio.com/docs/languages/identifiers
+  // explicitはtrueと同意
+  // https://code.visualstudio.com/updates/v1_85#_code-actions-on-save-and-auto
+
+  // https://code.visualstudio.com/docs/languages/identifiers
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit"
+    }
+  },
+  // https://github.com/DavidAnson/markdownlint/blob/v0.19.0/doc/Rules.md#md025
+  "markdownlint.config": {
+    "no-duplicate-heading": false,
+    "no-inline-html": false
+  },
+
+  // 以下CloudFormation用に要追加設定
+  // https://coffee-nominagara.com/cloudformation-vscode-plugins
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+
+  "[javascript][typescript][javascriptreact][typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      // import漏れの追加
+      // ESlint由来かつ、TypeScript専用
+      "source.addMissingImports": "explicit",
+      // importの並び替えと不要なimportの削除、eslint-plugin-importとeslint-plugin-unused-importsで実施する方針
+      // 一部不要なimportの削除が効かない場合があるため有効化する
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "explicit"
+    }
+  },
+  "eslint.format.enable": false,
+
+  "[css][scss]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    }
+  },
+  // StylelintとVSCode組み込みの協調
+  // https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint
+  "css.validate": false,
+  "scss.validate": false,
+  // "eslint.validate"は不要となった
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "scss"],
+  // tailwindcss推奨設定
+  // https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+  "files.associations": {
+    // "*.css"とするとPrettierとStylelintが全てのcssに対して効かなくなる
+    // よって、index.cssのみtailwindcssを効かせる
+    "index.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+
+  // https://itc-engineering-blog.netlify.app/blogs/vscode-extensions-black-flake8
+  // https://zenn.dev/yamaden/articles/23d3805fc85d99
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  // 一行あたりの最大文字数を統一
+  "flake8.args": ["--max-line-length=88", "--ignore=E203,E501,W503,W504"],
+  "black-formatter.args": ["--line-length=88"],
+  "python.analysis.extraPaths": ["/usr/local/lib/python3.12/site-packages"],
+
+  // https://qiita.com/nemutas/items/20f468bce96807d8fe3b
+  // https://qiita.com/notakaos/items/9f3ee8a3f3a0caf39f7b
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true
+  }
+}
