@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
-class UserManager(BaseUserManager):
+class SnscUserManager(BaseUserManager):
     """
     下記をもとに、メールアドレスをログイン時に使用するように変更
     https://github.com/django/django/blob/main/django/contrib/auth/models.py#L137
@@ -90,13 +90,14 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
-    objects = UserManager()
+    objects = SnscUserManager()
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
+        db_table = "snsc_user"
         verbose_name = _("user")
         verbose_name_plural = _("users")
         # abstract = True
@@ -122,7 +123,7 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Site(models.Model):
-    site_id = models.BigAutoField(primary_key=True, verbose_name="サイトID")
+    id = models.BigAutoField(primary_key=True, verbose_name="サイトID")
     site_name = models.CharField(max_length=50, verbose_name="サイト名")
     is_active = models.BooleanField(
         default=False, verbose_name="アクティブなサイトか否か"
