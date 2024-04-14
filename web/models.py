@@ -8,6 +8,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
+    """
+    下記をもとに、メールアドレスをログイン時に使用するように変更
+    https://github.com/django/django/blob/main/django/contrib/auth/models.py#L137
+    """
+
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
@@ -49,7 +54,8 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
 
     Username and password are required. Other fields are optional.
 
-    django.contrib.auth.models.AbstractUserをコピー
+    下記をもとに、メールアドレスをログイン時に使用するように変更
+    https://github.com/django/django/blob/main/django/contrib/auth/models.py#L335
     """
 
     username_validator = UnicodeUsernameValidator()
@@ -68,7 +74,7 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
-    email = models.EmailField(_("email address"), blank=True)
+    email = models.EmailField(_("email address"), unique=True, blank=True)
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -87,8 +93,8 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     EMAIL_FIELD = "email"
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = _("user")
