@@ -1,4 +1,4 @@
-{% load static %}
+{% load tag_library %} {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -8,7 +8,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link rel="stylesheet" href="{% static 'web/css/style.css' %}" />
+
+    {% if request|is_local %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% else %}
+    <link href="{% static 'web/css/tailwind_output.css' %}" rel="stylesheet" />
+    {% endif %}
+
     <link rel="icon" href="{% static 'web/img/favicon.ico' %}" />
   </head>
   <body>

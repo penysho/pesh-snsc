@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/django,macos,windows,linux
-# Edit at https://www.toptal.com/developers/gitignore?templates=django,macos,windows,linux
+# Created by https://www.toptal.com/developers/gitignore/api/linux,macos,django,windows,react
+# Edit at https://www.toptal.com/developers/gitignore?templates=linux,macos,django,windows,react
 
 ### Django ###
 *.log
@@ -219,6 +219,21 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
+### react ###
+.DS_*
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -245,4 +260,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/django,macos,windows,linux
+# End of https://www.toptal.com/developers/gitignore/api/linux,macos,django,windows,react
