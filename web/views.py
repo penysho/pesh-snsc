@@ -1,7 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.views import generic
 
+from .forms import LoginFrom
 
-class IndexView(generic.TemplateView):
+
+class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = "web/index.html"
 
     def get_context_data(self, **kwargs):
@@ -10,3 +15,12 @@ class IndexView(generic.TemplateView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+
+class LoginView(BaseLoginView):
+    form_class = LoginFrom
+    template_name = "web/login.html"
+
+
+class LogoutView(LoginRequiredMixin, BaseLogoutView):
+    template_name = "web/login.html"

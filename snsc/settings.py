@@ -125,3 +125,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # カスタムユーザーモデルを定義
 
 AUTH_USER_MODEL = "web.SnscUser"
+
+# ログインビューを定義
+
+LOGIN_URL = "web:login"
+
+LOGIN_REDIRECT_URL = "web:index"
+
+LOGOUT_REDIRECT_URL = "web:login"

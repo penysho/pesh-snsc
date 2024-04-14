@@ -137,6 +137,9 @@ class Site(models.Model):
         verbose_name = "サイトマスタ"
         verbose_name_plural = "サイトマスタ"
 
+    def __str__(self):
+        return self.site_name
+
 
 class SiteOwnership(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)

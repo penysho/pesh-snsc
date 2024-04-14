@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+
+<head>
+<meta charset="UTF-8">
+<title>ユーザーフォーム</title>
+</head>
+
+
+<body>
+    <form action="" method="POST">
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        {{ field }}
+        {{ field.errors }}
+        <hr>
+        {% endfor %}
+        <button type="submit">ログイン</button>{% csrf_token %}
+    </form>
+</body>
+
+
+</html>
