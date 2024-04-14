@@ -7,11 +7,11 @@ services:
       dockerfile: ./docker/app/Dockerfile
       target: develop
     container_name: snsc_app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8001
     volumes:
       - .:/app
     ports:
-      - "8001:8000"
+      - "8001:8001"
     depends_on:
       - db
 
