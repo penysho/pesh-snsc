@@ -1,5 +1,5 @@
 {% load tag_library %} {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <title>SNSC</title>
@@ -19,8 +19,22 @@
   </head>
   <body>
     <div class="container">
-      <header></header>
-      {% block content %} {% endblock %}
+      <header class="flex h-10 w-screen border-b border-gray-200 bg-white px-4">
+        <div class="mr-8 flex items-center">
+          <img
+            class="h-8 w-8"
+            src="{% static 'web/img/Instagram_Glyph_Gradient_RGB.png' %}"
+          />
+        </div>
+        <nav class="mr-8 flex items-center">
+          <ul class="max-lg:hidden">
+            <li><a href="{% url 'web:index' %}">Index</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main class="min-h-screen w-screen bg-violet-50">
+        {% block main %} {% endblock %}
+      </main>
       <footer></footer>
     </div>
   </body>
