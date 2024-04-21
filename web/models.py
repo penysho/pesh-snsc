@@ -123,12 +123,10 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Site(models.Model):
-    id = models.BigAutoField(primary_key=True, verbose_name="サイトID")
-    site_name = models.CharField(max_length=50, verbose_name="サイト名")
-    is_active = models.BooleanField(
-        default=False, verbose_name="アクティブなサイトか否か"
-    )
+    id = models.BigAutoField(primary_key=True, verbose_name="サイト識別子")
+    name = models.CharField(max_length=50, verbose_name="サイト名")
     snsc_users = models.ManyToManyField(SnscUser, through="SiteOwnership")
+    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
     updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
@@ -138,7 +136,7 @@ class Site(models.Model):
         verbose_name_plural = "サイトマスタ"
 
     def __str__(self):
-        return self.site_name
+        return self.name
 
 
 class SiteOwnership(models.Model):
@@ -151,3 +149,19 @@ class SiteOwnership(models.Model):
         db_table = "site_ownership"
         verbose_name = "サイト所有権紐付けテーブル"
         verbose_name_plural = "サイト所有権紐付けテーブル"
+
+
+class Sns(models.Model):
+    id = models.BigAutoField(primary_key=True, verbose_name="SNS識別子")
+    name = models.CharField(max_length=50, verbose_name="SNS名")
+    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
+    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
+
+    class Meta:
+        db_table = "sns"
+        verbose_name = "SNSマスタ"
+        verbose_name_plural = "SNSマスタ"
+
+    def __str__(self):
+        return self.name
