@@ -28,6 +28,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,16 +118,19 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# カスタムユーザーモデルを定義
+
+# カスタムユーザーモデルへの変更
 
 AUTH_USER_MODEL = "web.SnscUser"
 
-# ログインビューを定義
+
+# LoginViewにおける設定
 
 LOGIN_URL = "web:login"
 
