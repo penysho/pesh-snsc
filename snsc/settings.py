@@ -136,4 +136,4 @@ LOGIN_URL = "web:login"
 
 LOGIN_REDIRECT_URL = "web:index"
 
-LOGOUT_REDIRECT_URL = "web:login"
+LOGOUT_REDIRECT_URL = "web:index"

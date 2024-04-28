@@ -6,13 +6,10 @@ from django.shortcuts import render
 from django.views import generic
 
 from web import models
-from web.apps import WebConfig
+from web.components.common.template import get_template_name
+from web.components.instagram.request import create_ig_get_user_url
 
 from .forms import LoginFrom
-
-
-def get_template_name(file_name: str) -> str:
-    return f"{WebConfig.name}/{file_name}"
 
 
 class IndexView(LoginRequiredMixin, generic.TemplateView):
@@ -41,10 +38,6 @@ class PostListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "post_list"
 
 
-def create_ig_get_user_url(site: models.Site):
-    return f"https://graph.facebook.com/{site.version}/{site.account_id}?fields=business_discovery.username({site.username}){{{"biography,id,followers_count,follows_count,media_count,name,profile_picture_url,username,website"}}}&access_token={site.token}"
-
-
 class SiteRegisterView(LoginRequiredMixin, generic.View):
     template_name = get_template_name("site_register.html")
 
@@ -53,8 +46,9 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
         return render(request, SiteRegisterView.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        response = requests.get(create_ig_get_user_url(models.Sns.objects.get(site_id=1)))
-        print(response.json())
-
+        user_response = requests.get(
+            create_ig_get_user_url(models.Sns.objects.get(site_id=1))
+        ).json()
+        print(user_response)
         context = {"key": "登録後"}
         return render(request, SiteRegisterView.template_name, context)

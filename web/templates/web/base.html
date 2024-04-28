@@ -4,10 +4,7 @@
   <head>
     <title>SNSC</title>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     {% if request|is_local %}
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,22 +16,27 @@
   </head>
   <body>
     <div class="container">
-      <header class="flex h-10 w-screen border-b border-gray-200 bg-white px-4">
-        <div class="mr-8 flex items-center">
-          <img
-            class="h-8 w-8"
-            src="{% static 'web/img/Instagram_Glyph_Gradient_RGB.png' %}"
-          />
+      <header class="flex h-10 w-screen justify-between border-b border-gray-200 bg-white px-4">
+        <div class="flex gap-8">
+          <div class="flex items-center">
+            <img class="h-8 w-8" src="{% static 'web/img/Instagram_Glyph_Gradient_RGB.png' %}" />
+          </div>
+          <nav class="flex items-center max-lg:hidden">
+            <ul class="flex gap-4">
+              <li><a href="{% url 'web:index' %}">トップ</a></li>
+              <li><a href="{% url 'web:post_list' %}">投稿一覧</a></li>
+              <li><a href="{% url 'web:post_register' %}">サイト管理</a></li>
+            </ul>
+          </nav>
         </div>
-        <nav class="mr-8 flex items-center">
-          <ul class="max-lg:hidden">
-            <li><a href="{% url 'web:index' %}">Index</a></li>
-          </ul>
-        </nav>
+        <div class="flex items-center">
+          <form method="post" action="{% url 'web:logout' %}">
+            {% csrf_token %}
+            <button type="submit">logout</button>
+          </form>
+        </div>
       </header>
-      <main class="min-h-screen w-screen bg-violet-50">
-        {% block main %} {% endblock %}
-      </main>
+      <main class="min-h-screen w-screen bg-violet-50">{% block main %} {% endblock %}</main>
       <footer></footer>
     </div>
   </body>
