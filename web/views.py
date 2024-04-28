@@ -1,6 +1,8 @@
+import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
+from django.shortcuts import render
 from django.views import generic
 
 from web import models
@@ -37,3 +39,22 @@ class PostListView(LoginRequiredMixin, generic.ListView):
     template_name = get_template_name("post_list.html")
     model = models.Post
     context_object_name = "post_list"
+
+
+def create_ig_get_user_url(site: models.Site):
+    return f"https://graph.facebook.com/{site.version}/{site.account_id}?fields=business_discovery.username({site.username}){{{"biography,id,followers_count,follows_count,media_count,name,profile_picture_url,username,website"}}}&access_token={site.token}"
+
+
+class SiteRegisterView(LoginRequiredMixin, generic.View):
+    template_name = get_template_name("site_register.html")
+
+    def get(self, request, *args, **kwargs):
+        context = {"key": "登録前"}
+        return render(request, SiteRegisterView.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        response = requests.get(create_ig_get_user_url(models.Sns.objects.get(site_id=1)))
+        print(response.json())
+
+        context = {"key": "登録後"}
+        return render(request, SiteRegisterView.template_name, context)

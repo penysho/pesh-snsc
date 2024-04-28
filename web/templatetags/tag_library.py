@@ -6,5 +6,4 @@ register = template.Library()
 
 @register.filter()
 def is_local(request):
-    print(settings.DEBUG)
     return settings.DEBUG

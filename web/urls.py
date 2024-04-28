@@ -10,4 +10,5 @@ urlpatterns = [
     path("login/", views.LoginView.as_view(), name="login"),
     path("logout/", views.LogoutView.as_view(), name="logout"),
     path("post-list/", views.PostListView.as_view(), name="post_list"),
+    path("post-register/", views.SiteRegisterView.as_view(), name="post_register"),
 ]
