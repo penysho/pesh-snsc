@@ -158,7 +158,16 @@ class Sns(models.Model):
 
     id = models.BigAutoField(primary_key=True, verbose_name="SNS識別子")
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    type = models.CharField(max_length=10, choices=SnsName, verbose_name="SNS名")
+    type = models.CharField(max_length=10, choices=SnsName, verbose_name="SNS種別")
+    username = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name="SNSユーザーネーム"
+    )
+    api_id = token = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name="SNS情報取得識別子"
+    )
+    version = token = models.CharField(
+        max_length=10, blank=True, null=True, verbose_name="SNS情報取得バージョン"
+    )
     token = models.CharField(
         max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
     )
