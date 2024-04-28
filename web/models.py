@@ -152,18 +152,18 @@ class SiteOwnership(models.Model):
 
 
 class Sns(models.Model):
-    class SnsName(models.TextChoices):
+    class SnsType(models.TextChoices):
         INSTAGRAM = "IG", "Instagram"
         TIKTOK = "TK", "TikTok"
 
     id = models.BigAutoField(primary_key=True, verbose_name="SNS識別子")
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    type = models.CharField(max_length=10, choices=SnsName, verbose_name="SNS種別")
+    type = models.CharField(max_length=10, choices=SnsType, verbose_name="SNS種別")
     username = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="SNSユーザーネーム"
     )
-    api_id = token = models.CharField(
-        max_length=50, blank=True, null=True, verbose_name="SNS情報取得識別子"
+    account_id = token = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name="SNS情報取得アカウント識別子"
     )
     version = token = models.CharField(
         max_length=10, blank=True, null=True, verbose_name="SNS情報取得バージョン"
@@ -171,6 +171,27 @@ class Sns(models.Model):
     token = models.CharField(
         max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
     )
+
+    name = models.CharField(
+        max_length=30, blank=True, null=True, verbose_name="SNSユーザー名(日本語対応)"
+    )
+    biography = models.TextField(
+        blank=True, null=True, verbose_name="SNSユーザー説明文"
+    )
+    follows_count = models.IntegerField(
+        blank=True, null=True, verbose_name="SNSフォロー数"
+    )
+    followers_count = models.IntegerField(
+        blank=True, null=True, verbose_name="SNSフォロワー数"
+    )
+    post_count = models.IntegerField(blank=True, null=True, verbose_name="SNS投稿数")
+    profile_picture_url = models.URLField(
+        max_length=500, blank=True, null=True, verbose_name="SNSプロフィール画像URL"
+    )
+    website = models.URLField(
+        max_length=500, blank=True, null=True, verbose_name="SNSユーザーウェブサイト"
+    )
+
     is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
     updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
