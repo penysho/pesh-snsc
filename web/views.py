@@ -3,6 +3,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.views import generic
 
+from web import models
 from web.apps import WebConfig
 
 from .forms import LoginFrom
@@ -30,3 +31,9 @@ class LoginView(BaseLoginView):
 
 class LogoutView(LoginRequiredMixin, BaseLogoutView):
     template_name = get_template_name("login.html")
+
+
+class PostListView(LoginRequiredMixin, generic.ListView):
+    template_name = get_template_name("post_list.html")
+    model = models.Post
+    context_object_name = "post_list"
