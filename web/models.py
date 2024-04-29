@@ -124,8 +124,8 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
 
 class Site(models.Model):
     id = models.BigAutoField(primary_key=True, verbose_name="サイト識別子")
-    name = models.CharField(max_length=50, verbose_name="サイト名")
     snsc_users = models.ManyToManyField(SnscUser, through="SiteOwnership")
+    name = models.CharField(max_length=50, verbose_name="サイト名")
     is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
     updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
@@ -202,7 +202,7 @@ class Sns(models.Model):
         verbose_name_plural = "SNSマスタ"
 
     def __str__(self):
-        return self.type
+        return f"{self.type}-{self.site}"
 
 
 class Post(models.Model):

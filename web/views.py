@@ -5,9 +5,10 @@ from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.shortcuts import render
 from django.views import generic
 
-from web import models
+from web.components.common.session import get_current_site
 from web.components.common.template import get_template_name
 from web.components.instagram.request import create_ig_get_user_url
+from web.models import Post, Site, Sns
 
 from .forms import LoginFrom
 
@@ -27,6 +28,13 @@ class LoginView(BaseLoginView):
     form_class = LoginFrom
     template_name = get_template_name("login.html")
 
+    def form_valid(self, form):
+        self.request.session["current_site"] = Site.objects.filter(
+            siteownership__snsc_user__email=form.get_user()
+        )[0].id
+        print(self.request.session["current_site"])
+        return super().form_valid(form)
+
 
 class LogoutView(LoginRequiredMixin, BaseLogoutView):
     template_name = get_template_name("login.html")
@@ -34,7 +42,7 @@ class LogoutView(LoginRequiredMixin, BaseLogoutView):
 
 class PostListView(LoginRequiredMixin, generic.ListView):
     template_name = get_template_name("post_list.html")
-    model = models.Post
+    model = Post
     context_object_name = "post_list"
 
 
@@ -46,8 +54,9 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
         return render(request, SiteRegisterView.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        current_site = get_current_site(request.session)
         user_response = requests.get(
-            create_ig_get_user_url(models.Sns.objects.get(site_id=1))
+            create_ig_get_user_url(Sns.objects.get(site_id=current_site))
         ).json()
         print(user_response)
         context = {"key": "登録後"}
