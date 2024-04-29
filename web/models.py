@@ -203,7 +203,7 @@ class SnsApiAccount(models.Model):
         verbose_name_plural = "SNS情報取得アカウントマスタ"
 
     def __str__(self):
-        return f"{self.type}-{self.site}"
+        return f"{self.sns}"
 
 
 class SnsUserAccount(models.Model):
@@ -246,7 +246,7 @@ class SnsUserAccount(models.Model):
         verbose_name_plural = "SNSユーザーアカウントマスタタ"
 
     def __str__(self):
-        return self.username
+        return self.name
 
 
 class Post(models.Model):
