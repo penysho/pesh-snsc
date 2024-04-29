@@ -159,14 +159,9 @@ class Sns(models.Model):
     id = models.BigAutoField(primary_key=True, verbose_name="SNS識別子")
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=SnsType, verbose_name="SNS種別")
-    account_id = token = models.CharField(
-        max_length=50, blank=True, null=True, verbose_name="SNS情報取得アカウント識別子"
-    )
-    version = token = models.CharField(
-        max_length=10, blank=True, null=True, verbose_name="SNS情報取得バージョン"
-    )
-    token = models.CharField(
-        max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
+    username = models.CharField(
+        max_length=50,
+        verbose_name="各SNSユーザーアカウントにおける識別子",
     )
     is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
@@ -181,13 +176,41 @@ class Sns(models.Model):
         return f"{self.type}-{self.site}"
 
 
-class SnsUserAccount(models.Model):
+class SnsApiAccount(models.Model):
     id = models.BigAutoField(
-        primary_key=True, verbose_name="SNSユーザーアカウント識別子"
+        primary_key=True, verbose_name="SNS情報取得アカウント識別子"
     )
     sns = models.ForeignKey(Sns, on_delete=models.CASCADE)
-    username = models.CharField(
-        max_length=50, blank=True, null=True, verbose_name="SNSユーザーネーム"
+    api_account_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name="各SNSにおける情報取得アカウント識別子",
+    )
+    version = models.CharField(
+        max_length=10, blank=True, null=True, verbose_name="SNS情報取得バージョン"
+    )
+    token = models.CharField(
+        max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
+    )
+    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
+    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
+
+    class Meta:
+        db_table = "sns_api_account"
+        verbose_name = "SNS情報取得アカウントマスタ"
+        verbose_name_plural = "SNS情報取得アカウントマスタ"
+
+    def __str__(self):
+        return f"{self.type}-{self.site}"
+
+
+class SnsUserAccount(models.Model):
+    sns = models.OneToOneField(
+        Sns,
+        on_delete=models.CASCADE,
+        primary_key=True,
     )
     name = models.CharField(
         max_length=30, blank=True, null=True, verbose_name="SNSユーザー名(日本語対応)"
