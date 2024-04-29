@@ -159,9 +159,6 @@ class Sns(models.Model):
     id = models.BigAutoField(primary_key=True, verbose_name="SNS識別子")
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=SnsType, verbose_name="SNS種別")
-    username = models.CharField(
-        max_length=50, blank=True, null=True, verbose_name="SNSユーザーネーム"
-    )
     account_id = token = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="SNS情報取得アカウント識別子"
     )
@@ -171,7 +168,27 @@ class Sns(models.Model):
     token = models.CharField(
         max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
     )
+    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
+    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
+    class Meta:
+        db_table = "sns"
+        verbose_name = "SNSサイト管理用マスタ"
+        verbose_name_plural = "SNSサイト管理用マスタ"
+
+    def __str__(self):
+        return f"{self.type}-{self.site}"
+
+
+class SnsUserAccount(models.Model):
+    id = models.BigAutoField(
+        primary_key=True, verbose_name="SNSユーザーアカウント識別子"
+    )
+    sns = models.ForeignKey(Sns, on_delete=models.CASCADE)
+    username = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name="SNSユーザーネーム"
+    )
     name = models.CharField(
         max_length=30, blank=True, null=True, verbose_name="SNSユーザー名(日本語対応)"
     )
@@ -179,30 +196,34 @@ class Sns(models.Model):
         blank=True, null=True, verbose_name="SNSユーザー説明文"
     )
     follows_count = models.IntegerField(
-        blank=True, null=True, verbose_name="SNSフォロー数"
+        blank=True, null=True, verbose_name="SNSユーザーフォロー数"
     )
     followers_count = models.IntegerField(
-        blank=True, null=True, verbose_name="SNSフォロワー数"
+        blank=True, null=True, verbose_name="SNSユーザーフォロワー数"
     )
-    post_count = models.IntegerField(blank=True, null=True, verbose_name="SNS投稿数")
+    post_count = models.IntegerField(
+        blank=True, null=True, verbose_name="SNSユーザー投稿数"
+    )
     profile_picture_url = models.URLField(
-        max_length=500, blank=True, null=True, verbose_name="SNSプロフィール画像URL"
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="SNSユーザープロフィール画像URL",
     )
     website = models.URLField(
         max_length=500, blank=True, null=True, verbose_name="SNSユーザーウェブサイト"
     )
-
     is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
     updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
-        db_table = "sns"
-        verbose_name = "SNSマスタ"
-        verbose_name_plural = "SNSマスタ"
+        db_table = "sns_user_account"
+        verbose_name = "SNSユーザーアカウントマスタ"
+        verbose_name_plural = "SNSユーザーアカウントマスタタ"
 
     def __str__(self):
-        return f"{self.type}-{self.site}"
+        return self.username
 
 
 class Post(models.Model):
