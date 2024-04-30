@@ -1,10 +1,10 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.sns import Sns
+from web.models.snsc_base_model import SnscBaseModel
 
 
-class SnsApiAccount(models.Model):
+class SnsApiAccount(SnscBaseModel):
     id = models.BigAutoField(
         primary_key=True, verbose_name="SNS情報取得アカウント識別子"
     )
@@ -21,9 +21,6 @@ class SnsApiAccount(models.Model):
     token = models.CharField(
         max_length=1000, blank=True, null=True, verbose_name="SNS情報取得トークン"
     )
-    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "sns_api_account"

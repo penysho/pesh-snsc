@@ -1,11 +1,11 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.site import Site
 from web.models.sns import Sns
+from web.models.snsc_base_model import SnscBaseModel
 
 
-class Post(models.Model):
+class Post(SnscBaseModel):
     id = models.BigAutoField(primary_key=True, verbose_name="投稿識別子")
     sns = models.OneToOneField(
         Sns,
@@ -28,9 +28,6 @@ class Post(models.Model):
     caption = models.TextField(blank=True, null=True, verbose_name="投稿詳細文")
     permalink = models.URLField(max_length=500, verbose_name="投稿リンク")
     posted_at = models.DateTimeField(verbose_name="投稿日")
-    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "post"

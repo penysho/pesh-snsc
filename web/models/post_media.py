@@ -1,10 +1,10 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.post import Post
+from web.models.snsc_base_model import SnscBaseModel
 
 
-class PostMedia(models.Model):
+class PostMedia(SnscBaseModel):
     id = models.BigAutoField(primary_key=True, verbose_name="投稿メディア識別子")
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, verbose_name="投稿メディアタイプ")
@@ -21,9 +21,6 @@ class PostMedia(models.Model):
         upload_to="detail/",
         verbose_name="アプリケーションでホストされた詳細ページ用URL",
     )
-    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "post_media"

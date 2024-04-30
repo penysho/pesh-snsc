@@ -1,15 +1,13 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.site import Site
+from web.models.snsc_base_model import SnscBaseModel
 from web.models.snsc_user import SnscUser
 
 
-class SiteOwnership(models.Model):
+class SiteOwnership(SnscBaseModel):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     snsc_user = models.ForeignKey(SnscUser, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "site_ownership"

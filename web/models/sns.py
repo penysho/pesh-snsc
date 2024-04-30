@@ -1,10 +1,10 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.site import Site
+from web.models.snsc_base_model import SnscBaseModel
 
 
-class Sns(models.Model):
+class Sns(SnscBaseModel):
     class SnsType(models.TextChoices):
         INSTAGRAM = "IG", "Instagram"
         TIKTOK = "TK", "TikTok"
@@ -16,9 +16,6 @@ class Sns(models.Model):
         max_length=50,
         verbose_name="各SNSユーザーアカウントにおける識別子",
     )
-    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "sns"

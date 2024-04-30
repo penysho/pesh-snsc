@@ -1,10 +1,10 @@
 from django.db import models
-from django.utils import timezone
 
 from web.models.sns import Sns
+from web.models.snsc_base_model import SnscBaseModel
 
 
-class SnsUserAccount(models.Model):
+class SnsUserAccount(SnscBaseModel):
     sns = models.OneToOneField(
         Sns,
         on_delete=models.CASCADE,
@@ -34,9 +34,6 @@ class SnsUserAccount(models.Model):
     website = models.URLField(
         max_length=500, blank=True, null=True, verbose_name="SNSユーザーウェブサイト"
     )
-    is_active = models.BooleanField(default=False, verbose_name="使用フラグ")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="登録日")
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name="更新日")
 
     class Meta:
         db_table = "sns_user_account"
