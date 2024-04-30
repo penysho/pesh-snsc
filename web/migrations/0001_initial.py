@@ -7,6 +7,7 @@ from django.conf import settings
 from django.db import migrations, models
 
 import web.models
+import web.models.snsc_user
 
 
 class Migration(migrations.Migration):
