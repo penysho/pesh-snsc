@@ -171,7 +171,7 @@ LOGGING = {
         },
         "web": {
             "level": "INFO",
-            "filters": ["require_debug_false"],
+            # "filters": ["require_debug_false"],
             "class": "logging.StreamHandler",
             "formatter": "app",
         },
