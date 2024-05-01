@@ -1,21 +1,17 @@
 from django.db import models
 
-from web.models.site import Site
 from web.models.sns import Sns
 from web.models.snsc_base_model import SnscBaseModel
 
 
 class Post(SnscBaseModel):
     id = models.BigAutoField(primary_key=True, verbose_name="投稿識別子")
-    sns = models.OneToOneField(
+    sns = models.ForeignKey(
         Sns,
         on_delete=models.PROTECT,
-        primary_key=False,
     )
-    site = models.OneToOneField(
-        Site,
-        on_delete=models.PROTECT,
-        primary_key=False,
+    sns_post_id = models.CharField(
+        max_length=50, verbose_name="各SNSにおける投稿識別子"
     )
     username = models.CharField(max_length=50, verbose_name="投稿ユーザーネーム")
     title = models.CharField(

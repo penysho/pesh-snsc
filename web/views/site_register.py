@@ -7,7 +7,10 @@ from django.views import generic
 
 from web.components.common.session import get_current_site_id
 from web.components.common.template import get_template_name
-from web.components.instagram.request import create_ig_get_user_url
+from web.components.instagram.request import (
+    create_ig_get_media_url,
+    create_ig_get_user_url,
+)
 from web.sevices.sns import SnsService
 from web.sevices.sns_api_account import SnsApiAccountServise
 from web.sevices.sns_user_account import SnsUserAccountServise
@@ -22,11 +25,11 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
         current_site_id = get_current_site_id(request.session)
 
         context = {
-            "sns": SnsService(current_site_id).fetch_sns_list(),
-            "sns_api_account": SnsApiAccountServise(
+            "sns_list": SnsService(current_site_id).fetch_sns_list(),
+            "sns_api_accounts": SnsApiAccountServise(
                 current_site_id
             ).fetch_sns_api_accounts(),
-            "sns_user_account": SnsUserAccountServise(
+            "sns_user_accounts": SnsUserAccountServise(
                 current_site_id
             ).fetch_sns_user_accounts(),
         }
@@ -48,5 +51,9 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
         logger.info(
             f"{'SNSユーザーを登録しました' if created else 'SNSユーザーを更新しました'}: {sns_user_account.name}"
         )
-        context = {"key": "登録後"}
+
+        print(
+            requests.get(create_ig_get_media_url(sns_api_account)).json(),
+        )
+        context = {"sns_user_account": sns_user_account}
         return render(request, SiteRegisterView.template_name, context)
