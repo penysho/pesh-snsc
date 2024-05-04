@@ -13,7 +13,6 @@ class Post(SnscBaseModel):
     sns_post_id = models.CharField(
         max_length=50, verbose_name="各SNSにおける投稿識別子"
     )
-    username = models.CharField(max_length=50, verbose_name="投稿ユーザーネーム")
     title = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="投稿タイトル"
     )
