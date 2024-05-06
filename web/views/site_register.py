@@ -47,7 +47,8 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
             f"{'SNSユーザーを登録しました' if created else 'SNSユーザーを更新しました'}: {sns_user_account.name}"
         )
 
-        handler.update_or_create_post(sns_api_account)
+        posts = handler.update_or_create_post(sns_api_account)
+        logger.info(f"SNS投稿を登録/更新しました: {len(posts)}件")
 
-        context = {"sns_user_account": sns_user_account}
+        context = {"sns_user_account": sns_user_account, "posts": posts}
         return render(request, SiteRegisterView.template_name, context)
