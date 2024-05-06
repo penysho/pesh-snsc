@@ -30,4 +30,4 @@ class Post(SnscBaseModel):
         verbose_name_plural = "投稿マスタ"
 
     def __str__(self):
-        return self.title
+        return self.sns_post_id

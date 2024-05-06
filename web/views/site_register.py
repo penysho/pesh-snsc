@@ -1,16 +1,12 @@
 import logging
 
-import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 
 from web.components.common.session import get_current_site_id
 from web.components.common.template import get_template_name
-from web.components.instagram.request import (
-    create_ig_get_media_url,
-    create_ig_get_user_url,
-)
+from web.handlers.site_register import SiteRegisterHandler
 from web.sevices.sns import SnsService
 from web.sevices.sns_api_account import SnsApiAccountServise
 from web.sevices.sns_user_account import SnsUserAccountServise
@@ -42,18 +38,16 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
             current_site_id
         ).fetch_sns_api_account_by_type(type="IG")
 
-        sns_user_account, created = SnsUserAccountServise(
-            current_site_id
-        ).update_or_create_by_ig_response(
-            sns=sns_api_account.sns,
-            response=requests.get(create_ig_get_user_url(sns_api_account)),
+        handler = SiteRegisterHandler(current_site_id)
+
+        sns_user_account, created = handler.update_or_create_sns_user_account(
+            sns_api_account
         )
         logger.info(
             f"{'SNSユーザーを登録しました' if created else 'SNSユーザーを更新しました'}: {sns_user_account.name}"
         )
 
-        print(
-            requests.get(create_ig_get_media_url(sns_api_account)).json(),
-        )
+        handler.update_or_create_post(sns_api_account)
+
         context = {"sns_user_account": sns_user_account}
         return render(request, SiteRegisterView.template_name, context)
