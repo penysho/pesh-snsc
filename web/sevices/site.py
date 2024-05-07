@@ -13,6 +13,11 @@ class SiteService:
             is_active=True, siteownership__snsc_user__email=self.email
         )
 
+    def fetch_site_by_id(self, id: int) -> Site:
+        return Site.objects.get(
+            is_active=True, id=id, siteownership__snsc_user__email=self.email
+        )
+
     def fetch_site_by_name(self, name: str) -> Site:
         return Site.objects.get(
             is_active=True, name=name, siteownership__snsc_user__email=self.email

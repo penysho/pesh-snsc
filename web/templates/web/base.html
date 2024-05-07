@@ -33,10 +33,10 @@
           <form name="change-site" method="post" action="{% url 'web:index' %}">
             {% csrf_token %}
             <details class="relative">
-              <summary>{{ request.session.current_site.name }}</summary>
+              <summary>{{ snsc__current_site_name }}</summary>
               <ul class="absolute right-0 top-7 flex w-max flex-col gap-2 rounded border border-gray-200 bg-white p-2">
-                {% for site in request.session.sites|make_dict %}
-                <li class="header__site-item">{{ site.fields.name }}</li>
+                {% for site_name in snsc__site_names %}
+                <li class="header__site-item">{{ site_name }}</li>
                 {% endfor %}
               </ul>
             </details>

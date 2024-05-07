@@ -13,17 +13,10 @@ logger = logging.getLogger(__name__)
 class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = get_template_name("index.html")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
-        handler = IndexHandler()
-        site = handler.change_site(request)
+        index_handler = IndexHandler()
+        site = index_handler.change_site(request)
         logger.info(
-            f"{site.name}にセッションを変更しました: ユーザーID: {request.user.id}"
+            f"ユーザー: {request.user.id}: {site.name}にセッションを変更しました"
         )
         return render(request, self.template_name, context=self.kwargs)

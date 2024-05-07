@@ -8,10 +8,11 @@ from web.sevices.site import SiteService
 
 class LoginHandler:
 
-    def save_session(self, request: HttpRequest, form: AuthenticationForm) -> Site:
+    def create_site(
+        self, request: HttpRequest, form: AuthenticationForm
+    ) -> Site | None:
         site_service = SiteService(email=form.get_user())
-        sites = [i for i in site_service.fetch_sites()]
+        site = site_service.fetch_sites().first()
         session = SnscSession(request.session)
-        session.create_current_site(sites[0])
-        session.create_sites(sites)
-        return sites[0]
+        session.create_current_site(site)
+        return site
