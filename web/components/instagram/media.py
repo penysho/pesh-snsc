@@ -11,6 +11,7 @@ def convert_ig_get_media_for_register(response: Response):
     posts = []
     for business_discovery in response.json()["business_discovery"]["media"]["data"]:
         business_discovery["posted_at"] = business_discovery.pop("timestamp")
+        business_discovery["sns_url"] = business_discovery.pop("media_url")
         del business_discovery["media_product_type"]
         posts.append(business_discovery)
     return posts

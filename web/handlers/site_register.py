@@ -49,5 +49,5 @@ class SiteRegisterHandler:
                 post_media_service.update_or_create_by_response(
                     post=post, response=media
                 )
-                posts.appned(post)
+                posts.append(post)
         return posts
