@@ -5,7 +5,7 @@ from web.models import SnsApiAccount
 
 class SnsApiAccountServise:
 
-    def __init__(self, site_id: int):
+    def __init__(self, site_id: str):
         self.site_id = site_id
 
     def fetch_sns_api_account_by_type(self, type: str) -> SnsApiAccount:

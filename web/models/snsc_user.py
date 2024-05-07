@@ -98,9 +98,8 @@ class SnscUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = "snsc_user"
-        verbose_name = _("user")
-        verbose_name_plural = _("users")
-        # abstract = True
+        verbose_name = "SNSCユーザーマスタ"
+        verbose_name_plural = "SNSCユーザーマスタ"
 
     def clean(self):
         super().clean()

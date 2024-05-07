@@ -29,8 +29,19 @@
             </ul>
           </nav>
         </div>
-        <div class="flex items-center">
-          <form method="post" action="{% url 'web:logout' %}">
+        <div class="flex items-center gap-4">
+          <form name="change-site" method="post" action="{% url 'web:index' %}">
+            {% csrf_token %}
+            <details class="relative">
+              <summary>{{ request.session.current_site.name }}</summary>
+              <ul class="absolute right-0 top-7 flex w-max flex-col gap-2 rounded border border-gray-200 bg-white p-2">
+                {% for site in request.session.sites|make_dict %}
+                <li class="header__site-item">{{ site.fields.name }}</li>
+                {% endfor %}
+              </ul>
+            </details>
+          </form>
+          <form name="logout" method="post" action="{% url 'web:logout' %}">
             {% csrf_token %}
             <button type="submit">logout</button>
           </form>
@@ -39,5 +50,17 @@
       <main class="min-h-screen w-screen bg-violet-50">{% block main %} {% endblock %}</main>
       <footer></footer>
     </div>
+    <script>
+      document.querySelectorAll(".header__site-item").forEach((site) => {
+        site.addEventListener("click", () => {
+          const siteNameInput = document.createElement("input")
+          siteNameInput.type = "hidden"
+          siteNameInput.name = "site"
+          siteNameInput.value = site.innerHTML
+          site.appendChild(siteNameInput)
+          document.querySelector('form[name="change-site"]').submit()
+        })
+      })
+    </script>
   </body>
 </html>

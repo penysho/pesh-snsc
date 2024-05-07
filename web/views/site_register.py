@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 
-from web.components.common.session import get_current_site_id
+from web.components.common.session import SnscSession
 from web.components.common.template import get_template_name
 from web.handlers.site_register import SiteRegisterHandler
 from web.sevices.sns import SnsService
@@ -18,7 +18,8 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
     template_name = get_template_name("site_register.html")
 
     def get(self, request, *args, **kwargs):
-        current_site_id = get_current_site_id(request.session)
+        session = SnscSession(request.session)
+        current_site_id = session.get_current_site_id()
 
         context = {
             "sns_list": SnsService(current_site_id).fetch_sns_list(),
@@ -32,7 +33,8 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
         return render(request, SiteRegisterView.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        current_site_id = get_current_site_id(request.session)
+        session = SnscSession(request.session)
+        current_site_id = session.get_current_site_id()
 
         sns_api_account = SnsApiAccountServise(
             current_site_id

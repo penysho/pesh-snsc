@@ -5,7 +5,7 @@ from web.models import Sns
 
 class SnsService:
 
-    def __init__(self, site_id: int):
+    def __init__(self, site_id: str):
         self.site_id = site_id
 
     def fetch_sns_by_type(self, type: str) -> Sns:

@@ -6,7 +6,7 @@ from web.models.sns import Sns
 
 class SnsUserAccountServise:
 
-    def __init__(self, site_id: int):
+    def __init__(self, site_id: str):
         self.site_id = site_id
 
     def fetch_sns_user_account_by_type(self, type: str) -> SnsUserAccount:
