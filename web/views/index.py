@@ -21,7 +21,6 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         handler = IndexHandler()
         site = handler.change_site(request)
         logger.info(
