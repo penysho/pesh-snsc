@@ -14,8 +14,8 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = get_template_name("index.html")
 
     def post(self, request, *args, **kwargs):
-        index_handler = IndexHandler()
-        site = index_handler.change_site(request)
+        index_handler = IndexHandler(request=request)
+        site = index_handler.change_site()
         logger.info(
             f"ユーザー {request.user.id}: {site.name}にセッションを変更しました"
         )

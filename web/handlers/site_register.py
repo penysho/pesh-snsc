@@ -16,7 +16,7 @@ from web.sevices.sns_user_account import SnsUserAccountServise
 
 class SiteRegisterHandler:
 
-    def __init__(self, site_id: str):
+    def __init__(self, site_id: str) -> None:
         self.site_id = site_id
 
     def update_or_create_sns_user_account(

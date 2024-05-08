@@ -12,15 +12,20 @@ logger = logging.getLogger(__name__)
 
 class IndexHandler:
 
-    def change_site(self, request: HttpRequest) -> Site | None:
+    def __init__(self, request: HttpRequest) -> None:
+        self.request = request
+
+    def change_site(self) -> Site | None:
         try:
-            change_site = request.POST.get("site")
-            site_service = SiteService(email=request.user.email)
+            change_site = self.request.POST.get("site")
+            site_service = SiteService(email=self.request.user.email)
             site = site_service.fetch_site_by_name(name=change_site)
 
-            session = SnscSession(request.session)
+            session = SnscSession(self.request.session)
             session.create_current_site(site)
             return site
         except ObjectDoesNotExist as e:
-            logger.error(f"ユーザー {request.user.id}: {site.name}の権限がありません")
+            logger.error(
+                f"ユーザー {self.request.user.id}: {site.name}の権限がありません"
+            )
             raise e

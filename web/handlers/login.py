@@ -13,7 +13,10 @@ logger = logging.getLogger(__name__)
 
 class LoginHandler:
 
-    def create_site(self, request: HttpRequest, form: AuthenticationForm) -> Site:
+    def __init__(self, request: HttpRequest) -> None:
+        self.request = request
+
+    def create_site(self, form: AuthenticationForm) -> Site:
         site_service = SiteService(email=form.get_user())
         site = site_service.fetch_sites().first()
         if site is None:
@@ -22,6 +25,6 @@ class LoginHandler:
             )
             raise ValidationError("操作権限を持つサイトがありません")
         else:
-            session = SnscSession(request.session)
+            session = SnscSession(self.request.session)
             session.create_current_site(site)
             return site
