@@ -17,6 +17,6 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
         index_handler = IndexHandler()
         site = index_handler.change_site(request)
         logger.info(
-            f"ユーザー: {request.user.id}: {site.name}にセッションを変更しました"
+            f"ユーザー {request.user.id}: {site.name}にセッションを変更しました"
         )
         return render(request, self.template_name, context=self.kwargs)

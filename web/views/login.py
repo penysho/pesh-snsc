@@ -16,5 +16,5 @@ class LoginView(BaseLoginView):
     def form_valid(self, form):
         login_handler = LoginHandler()
         site = login_handler.create_site(request=self.request, form=form)
-        logger.info(f"ユーザー: {form.get_user().id}: {site.name}にログインしました")
+        logger.info(f"ユーザー {form.get_user().id}: {site.name}にログインしました")
         return super().form_valid(form)
