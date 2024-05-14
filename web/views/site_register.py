@@ -6,10 +6,7 @@ from django.views import generic
 
 from web.components.common.session import SnscSession
 from web.components.common.template import get_template_name
-from web.handlers.site_register import SiteRegisterHandler
-from web.sevices.sns import SnsService
-from web.sevices.sns_api_account import SnsApiAccountServise
-from web.sevices.sns_user_account import SnsUserAccountServise
+from web.services.site_register.implements.site_register import SiteRegisterServiceImpl
 
 logger = logging.getLogger(__name__)
 
@@ -20,36 +17,25 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
     def get(self, request, *args, **kwargs):
         session = SnscSession(request.session)
         current_site_id = session.get_current_site_id()
-
-        context = {
-            "sns_list": SnsService(current_site_id).fetch_sns_list(),
-            "sns_api_accounts": SnsApiAccountServise(
-                current_site_id
-            ).fetch_sns_api_accounts(),
-            "sns_user_accounts": SnsUserAccountServise(
-                current_site_id
-            ).fetch_sns_user_accounts(),
-        }
+        service = SiteRegisterServiceImpl(current_site_id)
+        context = service.create_context_for_get()
         return render(request, SiteRegisterView.template_name, context)
 
     def post(self, request, *args, **kwargs):
         session = SnscSession(request.session)
         current_site_id = session.get_current_site_id()
+        service = SiteRegisterServiceImpl(current_site_id)
 
-        sns_api_account = SnsApiAccountServise(
-            current_site_id
-        ).fetch_sns_api_account_by_type(type="IG")
+        sns_api_account = service.fetch_sns_api_account(type="IG")
 
-        handler = SiteRegisterHandler(current_site_id)
-
-        sns_user_account, created = handler.update_or_create_sns_user_account(
+        sns_user_account, created = service.update_or_create_sns_user_account(
             sns_api_account
         )
         logger.info(
             f"{'SNSユーザーを登録しました' if created else 'SNSユーザーを更新しました'}: {sns_user_account.name}"
         )
 
-        posts = handler.update_or_create_post(sns_api_account)
+        posts = service.update_or_create_post(sns_api_account)
         logger.info(f"SNS投稿を登録/更新しました: {len(posts)}件")
 
         context = {"sns_user_account": sns_user_account, "posts": posts}

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import generic
 
 from web.components.common.template import get_template_name
-from web.handlers.index import IndexHandler
+from web.services.index.implements.index import IndexServiceImpl
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +14,8 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = get_template_name("index.html")
 
     def post(self, request, *args, **kwargs):
-        index_handler = IndexHandler(request=request)
-        site = index_handler.change_site()
+        service = IndexServiceImpl(request=request)
+        site = service.change_site()
         logger.info(
             f"ユーザー {request.user.id}: {site.name}にセッションを変更しました"
         )

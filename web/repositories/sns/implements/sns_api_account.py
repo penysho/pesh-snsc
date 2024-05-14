@@ -1,9 +1,10 @@
 from django.db.models.manager import BaseManager
 
 from web.models import SnsApiAccount
+from web.repositories.sns.sns_api_account import SnsApiAccountRepository
 
 
-class SnsApiAccountServise:
+class SnsApiAccountRepositoryImpl(SnsApiAccountRepository):
 
     def __init__(self, site_id: str):
         self.site_id = site_id

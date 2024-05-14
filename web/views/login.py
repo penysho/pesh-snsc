@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 
 from web.components.common.template import get_template_name
 from web.forms import LoginFrom
-from web.handlers.login import LoginHandler
+from web.services.login.implements.login import LoginServiceImpl
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ class LoginView(BaseLoginView):
     template_name = get_template_name("login.html")
 
     def form_valid(self, form):
-        login_handler = LoginHandler(request=self.request)
-        site = login_handler.create_site(form=form)
+        service = LoginServiceImpl(request=self.request)
+        site = service.create_site(form=form)
         logger.info(f"ユーザー {form.get_user().id}: {site.name}にログインしました")
         return super().form_valid(form)

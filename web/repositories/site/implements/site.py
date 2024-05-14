@@ -1,9 +1,10 @@
 from django.db.models.manager import BaseManager
 
 from web.models import Site
+from web.repositories.site.site import SiteRepository
 
 
-class SiteService:
+class SiteRepositoryImpl(SiteRepository):
 
     def __init__(self, email: str):
         self.email = email
