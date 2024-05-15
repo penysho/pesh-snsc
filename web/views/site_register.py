@@ -6,6 +6,7 @@ from django.views import generic
 
 from web.components.common.session import SnscSession
 from web.components.common.template import get_template_name
+from web.repositories.api.implements.instagram import InstagramRepositoryImpl
 from web.services.site_register.implements.site_register import SiteRegisterServiceImpl
 
 logger = logging.getLogger(__name__)
@@ -17,14 +18,14 @@ class SiteRegisterView(LoginRequiredMixin, generic.View):
     def get(self, request, *args, **kwargs):
         session = SnscSession(request.session)
         current_site_id = session.get_current_site_id()
-        service = SiteRegisterServiceImpl(current_site_id)
+        service = SiteRegisterServiceImpl(current_site_id, InstagramRepositoryImpl())
         context = service.create_context_for_get()
         return render(request, SiteRegisterView.template_name, context)
 
     def post(self, request, *args, **kwargs):
         session = SnscSession(request.session)
         current_site_id = session.get_current_site_id()
-        service = SiteRegisterServiceImpl(current_site_id)
+        service = SiteRegisterServiceImpl(current_site_id, InstagramRepositoryImpl())
 
         sns_api_account = service.fetch_sns_api_account(type="IG")
 

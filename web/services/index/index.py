@@ -6,5 +6,5 @@ from web.models import Site
 class IndexService(ABC):
 
     @abstractmethod
-    def change_site(self) -> Site | None:
+    def change_site(self) -> Site:
         pass

@@ -16,7 +16,7 @@ class IndexServiceImpl(IndexService):
     def __init__(self, request: HttpRequest) -> None:
         self.request = request
 
-    def change_site(self) -> Site | None:
+    def change_site(self) -> Site:
         try:
             change_site = self.request.POST.get("site")
             site_repository = SiteRepositoryImpl(email=self.request.user.email)
