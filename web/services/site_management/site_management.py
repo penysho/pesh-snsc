@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from web.models import Post, SnsApiAccount, SnsUserAccount
 
 
-class SiteRegisterService(ABC):
+class SiteManagementService(ABC):
 
     @abstractmethod
     def create_context_for_get(self) -> dict:

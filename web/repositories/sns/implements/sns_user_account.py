@@ -6,20 +6,17 @@ from web.repositories.sns.sns_user_account import SnsUserAccountRepository
 
 class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
 
-    def __init__(self, site_id: str):
-        self.site_id = site_id
-
-    def fetch_sns_user_account_by_type(self, type: str) -> SnsUserAccount:
+    def fetch_sns_user_account_by_type(self, site_id: int, type: str) -> SnsUserAccount:
         return SnsUserAccount.objects.select_related("sns").get(
             is_active=True,
-            sns__site_id=self.site_id,
+            sns__site_id=site_id,
             sns__type=type,
             sns__is_active=True,
         )
 
-    def fetch_sns_user_accounts(self) -> BaseManager[SnsUserAccount]:
+    def fetch_sns_user_accounts(self, site_id: int) -> BaseManager[SnsUserAccount]:
         return SnsUserAccount.objects.select_related("sns").filter(
-            is_active=True, sns__site_id=self.site_id, sns__is_active=True
+            is_active=True, sns__site_id=site_id, sns__is_active=True
         )
 
     def update_or_create_by_response(

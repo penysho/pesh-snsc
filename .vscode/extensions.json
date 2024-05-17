@@ -33,6 +33,7 @@
     "aws-scripting-guy.cform",
     // Docker
     "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
     // Git
     "mhutchie.git-graph",
     // 共通

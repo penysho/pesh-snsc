@@ -8,9 +8,9 @@ from web.models import SnsApiAccount
 class SnsApiAccountRepository(ABC):
 
     @abstractmethod
-    def fetch_sns_api_account_by_type(self, type: str) -> SnsApiAccount:
+    def fetch_sns_api_account_by_type(self, site_id: int, type: str) -> SnsApiAccount:
         pass
 
     @abstractmethod
-    def fetch_sns_api_accounts(self) -> BaseManager[SnsApiAccount]:
+    def fetch_sns_api_accounts(self, site_id: int) -> BaseManager[SnsApiAccount]:
         pass

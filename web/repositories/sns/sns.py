@@ -8,9 +8,9 @@ from web.models import Sns
 class SnsRepository(ABC):
 
     @abstractmethod
-    def fetch_sns_by_type(self, type: str) -> Sns:
+    def fetch_sns_by_type(self, site_id: int, type: str) -> Sns:
         pass
 
     @abstractmethod
-    def fetch_sns_list(self) -> BaseManager:
+    def fetch_sns_list(self, site_id: int) -> BaseManager[Sns]:
         pass
