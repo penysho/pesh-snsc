@@ -1,6 +1,7 @@
 {% extends 'web/base.html' %} {% load static %} {% block main %}
 
 <form action="" method="POST">
+  <input type="hidden" name="sns-type" value="IG" />
   <button type="submit">登録</button>{% csrf_token %}
 </form>
 {{ key }} {% endblock %}

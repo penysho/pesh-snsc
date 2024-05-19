@@ -35,7 +35,9 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
             site_id=SnscSession(request.session).get_current_site_id()
         )
 
-        sns_api_account = service.fetch_sns_api_account(type="IG")
+        sns_api_account = service.fetch_sns_api_account(
+            type=request.POST.get("sns-type")
+        )
 
         sns_user_account, created = service.update_or_create_sns_user_account(
             sns_api_account
