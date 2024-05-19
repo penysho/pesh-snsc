@@ -35,10 +35,6 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
             site_id=SnscSession(request.session).get_current_site_id()
         )
 
-        # session = SnscSession(request.session)
-        # current_site_id = session.get_current_site_id()
-        # service = SiteManagementServiceImpl(current_site_id, InstagramRepositoryImpl())
-
         sns_api_account = service.fetch_sns_api_account(type="IG")
 
         sns_user_account, created = service.update_or_create_sns_user_account(
