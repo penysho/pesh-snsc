@@ -20,14 +20,12 @@ class IndexServiceImpl(IndexService):
 
     def change_site(self, request: HttpRequest) -> Site:
         try:
-            change_site = self.request.POST.get("site")
+            change_site = request.POST.get("site")
             site = self.site_repository.fetch_site_by_name(
                 email=request.user.email, name=change_site
             )
             self.session.create_current_site(site)
             return site
         except NotFoundObjectException:
-            logger.error(
-                f"ユーザー {self.request.user.id}: {site.name}の権限がありません"
-            )
+            logger.error(f"ユーザー {request.user.id}: {site.name}の権限がありません")
             raise SitePermissionException()
