@@ -7,31 +7,30 @@ from web.repositories.site.site import SiteRepository
 
 
 class SiteRepositoryImpl(SiteRepository):
-
-    def __init__(self, email: str):
-        self.email = email
-
-    def fetch_site_by_id(self, id: int) -> Site:
+    def fetch_site_by_id(self, email: str, id: int) -> Site:
         try:
             return Site.objects.get(
-                is_active=True, id=id, siteownership__snsc_user__email=self.email
+                is_active=True, id=id, siteownership__snsc_user__email=email
             )
         except ObjectDoesNotExist:
             raise NotFoundObjectException(Site, f"Site with id {id} not found")
         except Exception as e:
             raise DatabaseException(e)
 
-    def fetch_site_by_name(self, name: str) -> Site:
+    def fetch_site_by_name(self, email: str, name: str) -> Site:
         try:
             return Site.objects.get(
-                is_active=True, name=name, siteownership__snsc_user__email=self.email
+                is_active=True, name=name, siteownership__snsc_user__email=email
             )
         except ObjectDoesNotExist:
             raise NotFoundObjectException(Site, f"Site with name {name} not found")
         except Exception as e:
             raise DatabaseException(e)
 
-    def fetch_sites(self) -> BaseManager[Site]:
+    def fetch_sites(
+        self,
+        email: str,
+    ) -> BaseManager[Site]:
         return Site.objects.filter(
-            is_active=True, siteownership__snsc_user__email=self.email
+            is_active=True, siteownership__snsc_user__email=email
         )
