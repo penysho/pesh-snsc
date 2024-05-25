@@ -7,11 +7,9 @@ from web.repositories.site.site import SiteRepository
 
 
 class SiteRepositoryImpl(SiteRepository):
-    def fetch_site_by_id(self, email: str, id: int) -> Site:
+    def fetch_site_by_id(self, id: int) -> Site:
         try:
-            return Site.objects.get(
-                is_active=True, id=id, siteownership__snsc_user__email=email
-            )
+            return Site.objects.get(is_active=True, id=id)
         except ObjectDoesNotExist:
             raise NotFoundObjectException(Site, f"Site with id {id} not found")
         except Exception as e:
