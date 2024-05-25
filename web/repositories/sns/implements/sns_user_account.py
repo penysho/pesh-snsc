@@ -1,18 +1,28 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.manager import BaseManager
 
 from web.models import Sns, SnsUserAccount
+from web.repositories.exceptions.exceptions import DatabaseException, NotFoundException
 from web.repositories.sns.sns_user_account import SnsUserAccountRepository
 
 
 class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
 
     def fetch_sns_user_account_by_type(self, site_id: int, type: str) -> SnsUserAccount:
-        return SnsUserAccount.objects.select_related("sns").get(
-            is_active=True,
-            sns__site_id=site_id,
-            sns__type=type,
-            sns__is_active=True,
-        )
+        try:
+            return SnsUserAccount.objects.select_related("sns").get(
+                is_active=True,
+                sns__site_id=site_id,
+                sns__type=type,
+                sns__is_active=True,
+            )
+        except ObjectDoesNotExist:
+            raise NotFoundException(
+                SnsUserAccount,
+                f"SnsUserAccount with site id {site_id} and type {type} not found",
+            )
+        except Exception as e:
+            raise DatabaseException(e)
 
     def fetch_sns_user_accounts(self, site_id: int) -> BaseManager[SnsUserAccount]:
         return SnsUserAccount.objects.select_related("sns").filter(

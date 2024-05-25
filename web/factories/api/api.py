@@ -13,7 +13,9 @@ class ApiFactory:
         self.instagram_repository = instagram_repository
         self.tiktok_repository = tiktok_repository
 
-    def get_repository_by_type(self, type: str):
+    def get_repository_by_type(
+        self, type: str
+    ) -> InstagramRepositoryImpl | TiktokRepositoryImpl:
         if type == Sns.SnsType.INSTAGRAM:
             return self.instagram_repository
         elif type == Sns.SnsType.TIKTOK:
@@ -21,7 +23,9 @@ class ApiFactory:
         else:
             raise ValueError("Unsupported SNS type")
 
-    def get_repository_by_sns_api_account(self, sns_api_account: SnsApiAccount):
+    def get_repository_by_sns_api_account(
+        self, sns_api_account: SnsApiAccount
+    ) -> InstagramRepositoryImpl | TiktokRepositoryImpl:
         if sns_api_account.sns.type == Sns.SnsType.INSTAGRAM:
             return self.instagram_repository
         elif sns_api_account.sns.type == Sns.SnsType.TIKTOK:
