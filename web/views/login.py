@@ -2,7 +2,7 @@ import logging
 
 from django.contrib.auth.views import LoginView as BaseLoginView
 
-from web.components.common.session import SnscSession
+from core.session.implements.session import SnscSessionImpl
 from web.components.common.template import get_template_name
 from web.forms import LoginFrom
 from web.repositories.site.implements.site import SiteRepositoryImpl
@@ -17,7 +17,7 @@ class LoginView(BaseLoginView):
 
     def form_valid(self, form):
         service = LoginServiceImpl(
-            rsession=SnscSession(self.request.session),
+            session=SnscSessionImpl(self.request.session),
             site_repository=SiteRepositoryImpl(),
         )
         site = service.create_site(form=form)

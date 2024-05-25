@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import generic
 from injector import AssistedBuilder, Injector
 
-from web.components.common.session import SnscSession
+from core.session.implements.session import SnscSessionImpl
 from web.components.common.template import get_template_name
 from web.modules.site_management import SiteManagementModule
 from web.services.site_management.implements.site_management import (
@@ -22,7 +22,7 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
         injector = Injector([SiteManagementModule])
         service_builder = injector.get(AssistedBuilder[SiteManagementServiceImpl])
         service = service_builder.build(
-            site_id=SnscSession(request.session).get_current_site_id()
+            site_id=SnscSessionImpl(request.session).get_current_site_id()
         )
 
         context = service.create_context_for_get()
@@ -32,7 +32,7 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
         injector = Injector([SiteManagementModule])
         service_builder = injector.get(AssistedBuilder[SiteManagementServiceImpl])
         service = service_builder.build(
-            site_id=SnscSession(request.session).get_current_site_id()
+            site_id=SnscSessionImpl(request.session).get_current_site_id()
         )
 
         sns_api_account = service.fetch_sns_api_account(

@@ -2,7 +2,7 @@ import logging
 
 from django.http import HttpRequest
 
-from web.components.common.session import SnscSession
+from core.session.session import SnscSession
 from web.models import Site
 from web.repositories.exceptions import NotFoundObjectException
 from web.repositories.site.site import SiteRepository

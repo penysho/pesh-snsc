@@ -2,7 +2,7 @@ import logging
 
 from django.contrib.auth.forms import AuthenticationForm
 
-from web.components.common.session import SnscSession
+from core.session.session import SnscSession
 from web.models import Site
 from web.repositories.site.site import SiteRepository
 from web.services.exceptions import SitePermissionException
@@ -18,7 +18,7 @@ class LoginServiceImpl(LoginService):
         self.site_repository = site_repository
 
     def create_site(self, form: AuthenticationForm) -> Site:
-        site = self.site_repository.fetch_sites().first()
+        site = self.site_repository.fetch_sites(email=form.get_user().email).first()
         if site is None:
             logger.error(
                 f"ユーザー {form.get_user().id}: 操作権限を持つサイトがありません"

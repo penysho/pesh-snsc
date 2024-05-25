@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 
-from web.components.common.session import SnscSession
+from core.session.implements.session import SnscSessionImpl
 from web.components.common.template import get_template_name
 from web.repositories.site.implements.site import SiteRepositoryImpl
 from web.services.index.implements.index import IndexServiceImpl
@@ -17,7 +17,8 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         service = IndexServiceImpl(
-            session=SnscSession(request.session), site_repository=SiteRepositoryImpl()
+            session=SnscSessionImpl(request.session),
+            site_repository=SiteRepositoryImpl(),
         )
         site = service.change_site(request=request)
         logger.info(
