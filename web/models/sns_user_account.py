@@ -38,7 +38,7 @@ class SnsUserAccount(SnscBaseModel):
     class Meta:
         db_table = "sns_user_account"
         verbose_name = "SNSユーザーアカウントマスタ"
-        verbose_name_plural = "SNSユーザーアカウントマスタタ"
+        verbose_name_plural = "SNSユーザーアカウントマスタ"
 
     def __str__(self):
         return self.name
