@@ -1,19 +1,19 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 
-class AppException(Exception):
-    """Base exception for the application."""
+class RepositoryException(Exception):
+    """Base exception for the repositories."""
 
     pass
 
 
-class NotFoundException(ObjectDoesNotExist):
+class NotFoundObjectException(ObjectDoesNotExist):
     """Exception raised when object is not found."""
 
     pass
 
 
-class DatabaseException(AppException):
+class DatabaseException(RepositoryException):
     """Exception raised for database errors."""
 
     def __init__(self, error: Exception):

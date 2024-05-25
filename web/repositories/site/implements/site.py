@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.manager import BaseManager
 
 from web.models import Site
-from web.repositories.exceptions.exceptions import DatabaseException, NotFoundException
+from web.repositories.exceptions import DatabaseException, NotFoundObjectException
 from web.repositories.site.site import SiteRepository
 
 
@@ -17,7 +17,7 @@ class SiteRepositoryImpl(SiteRepository):
                 is_active=True, id=id, siteownership__snsc_user__email=self.email
             )
         except ObjectDoesNotExist:
-            raise NotFoundException(Site, f"Site with id {id} not found")
+            raise NotFoundObjectException(Site, f"Site with id {id} not found")
         except Exception as e:
             raise DatabaseException(e)
 
@@ -27,7 +27,7 @@ class SiteRepositoryImpl(SiteRepository):
                 is_active=True, name=name, siteownership__snsc_user__email=self.email
             )
         except ObjectDoesNotExist:
-            raise NotFoundException(Site, f"Site with name {name} not found")
+            raise NotFoundObjectException(Site, f"Site with name {name} not found")
         except Exception as e:
             raise DatabaseException(e)
 

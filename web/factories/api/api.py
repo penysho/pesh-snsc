@@ -1,3 +1,4 @@
+from web.factories.exceptions import NotFoundDependencyException
 from web.models import Sns, SnsApiAccount
 from web.repositories.api.implements.instagram import InstagramRepositoryImpl
 from web.repositories.api.implements.tiktok import TiktokRepositoryImpl
@@ -21,7 +22,7 @@ class ApiFactory:
         elif type == Sns.SnsType.TIKTOK:
             return self.tiktok_repository
         else:
-            raise ValueError("Unsupported SNS type")
+            raise NotFoundDependencyException(f"Unsupported SNS type: {type}")
 
     def get_repository_by_sns_api_account(
         self, sns_api_account: SnsApiAccount
@@ -31,4 +32,4 @@ class ApiFactory:
         elif sns_api_account.sns.type == Sns.SnsType.TIKTOK:
             return self.tiktok_repository
         else:
-            raise ValueError("Unsupported SNS type")
+            raise NotFoundDependencyException(f"Unsupported SNS type: {type}")

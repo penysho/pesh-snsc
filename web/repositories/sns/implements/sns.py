@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.manager import BaseManager
 
 from web.models import Sns
-from web.repositories.exceptions.exceptions import DatabaseException, NotFoundException
+from web.repositories.exceptions import DatabaseException, NotFoundObjectException
 from web.repositories.sns.sns import SnsRepository
 
 
@@ -16,7 +16,7 @@ class SnsRepositoryImpl(SnsRepository):
                 is_active=True,
             )
         except ObjectDoesNotExist:
-            raise NotFoundException(
+            raise NotFoundObjectException(
                 Sns,
                 f"Sns with site id {site_id} and type {type} not found",
             )

@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.manager import BaseManager
 
 from web.models import Sns, SnsUserAccount
-from web.repositories.exceptions.exceptions import DatabaseException, NotFoundException
+from web.repositories.exceptions import DatabaseException, NotFoundObjectException
 from web.repositories.sns.sns_user_account import SnsUserAccountRepository
 
 
@@ -17,7 +17,7 @@ class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
                 sns__is_active=True,
             )
         except ObjectDoesNotExist:
-            raise NotFoundException(
+            raise NotFoundObjectException(
                 SnsUserAccount,
                 f"SnsUserAccount with site id {site_id} and type {type} not found",
             )
