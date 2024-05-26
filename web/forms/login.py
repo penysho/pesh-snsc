@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from web.admin import SnscUser
 
 
-class LoginFrom(AuthenticationForm):
+class LoginForm(AuthenticationForm):
     class Meta:
         model = SnscUser
 

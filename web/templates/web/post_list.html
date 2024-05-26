@@ -1,9 +1,13 @@
 {% extends 'web/base.html' %} {% load static %} {% block main %}
 
 <section>
-  {% for post in post_list %}
-  <div>{{ post.id }}</div>
-  {% endfor %}
+  <div class="grid grid-cols-4 gap-8 p-8">
+    {% for post in post_list %}
+    <a class="list-text-pc" href="{% url 'web:post_update' post.pk %}">
+      <img src="{{ post.medias.0.hosted_detail_url.url }}" />
+    </a>
+    {% endfor %}
+  </div>
 </section>
 
 {% endblock %}
