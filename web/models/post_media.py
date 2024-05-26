@@ -6,7 +6,10 @@ from web.models.snsc_base_model import SnscBaseModel
 
 class PostMedia(SnscBaseModel):
     id = models.BigAutoField(primary_key=True, verbose_name="投稿メディア識別子")
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # https://docs.djangoproject.com/en/5.0/ref/models/fields/#django.db.models.ForeignKey.related_name
+    # https://docs.djangoproject.com/en/5.0/topics/db/queries/#backwards-related-objects
+    # related_nameに逆参照時に指定するモデル名を設定
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post_media")
     type = models.CharField(max_length=20, verbose_name="投稿メディアタイプ")
     sns_url = models.URLField(
         max_length=1000, blank=True, null=True, verbose_name="SNS側でホストされたURL"

@@ -1,4 +1,9 @@
 {% extends 'web/base.html' %} {% load static %} {% block main %}
 
-<div>こんばんわ</div>
-{{ post_list }} {% endblock %}
+<section>
+  {% for post in post_list %}
+  <div>{{ post.id }}</div>
+  {% endfor %}
+</section>
+
+{% endblock %}
