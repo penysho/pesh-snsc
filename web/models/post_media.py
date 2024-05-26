@@ -24,8 +24,17 @@ class PostMedia(SnscBaseModel):
         upload_to="detail/",
         verbose_name="アプリケーションでホストされた詳細ページ用URL",
     )
+    list_order = models.PositiveSmallIntegerField(
+        default=0, verbose_name="一覧表示する際の優先度"
+    )
 
     class Meta:
         db_table = "post_media"
         verbose_name = "投稿メディアマスタ"
         verbose_name_plural = "投稿メディアマスタ"
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["post", "list_order"], name=f"uq_{db_table}_list_order"
+            ),
+        ]

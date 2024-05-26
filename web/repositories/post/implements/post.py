@@ -11,6 +11,16 @@ from web.repositories.post.post import PostRepository
 
 
 class PostRepositoryImpl(PostRepository):
+
+    def fetch_posts_with_media(self, site_id: int) -> BaseManager[Post]:
+        return Post.objects.prefetch_related(
+            Prefetch(
+                "post_media",
+                queryset=PostMedia.objects.filter(is_active=True, list_order=0),
+                to_attr="medias",
+            )
+        ).filter(is_active=True, sns__site__id=site_id)
+
     def update_or_create_post_by_response(
         self, sns: Sns, response: dict[str, int]
     ) -> tuple[Post, bool]:
@@ -61,12 +71,3 @@ class PostRepositoryImpl(PostRepository):
             },
         )
         return post_media, created
-
-    def fetch_posts_with_media(self, site_id: int) -> BaseManager[Post]:
-        return Post.objects.prefetch_related(
-            Prefetch(
-                "post_media",
-                queryset=PostMedia.objects.filter(is_active=True),
-                to_attr="medias",
-            )
-        ).filter(is_active=True, sns__site__id=site_id)
