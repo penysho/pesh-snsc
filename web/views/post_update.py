@@ -6,7 +6,7 @@ from web.components.common.template import get_template_name
 from web.forms import PostUpdateForm
 from web.models import Post
 from web.repositories.post.implements.post import PostRepositoryImpl
-from web.services.post_list.implements.post_list import PostListServiceImpl
+from web.services.post_update.implements.post_update import PostUpdateServiceImpl
 
 
 class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -15,6 +15,6 @@ class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = PostUpdateForm
 
     def get_queryset(self):
-        return PostListServiceImpl(post_repository=PostRepositoryImpl()).get_queryset(
+        return PostUpdateServiceImpl(post_repository=PostRepositoryImpl()).get_queryset(
             site_id=SnscSessionImpl(self.request.session).get_current_site_id()
         )
