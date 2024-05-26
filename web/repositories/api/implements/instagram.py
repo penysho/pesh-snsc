@@ -22,10 +22,13 @@ class InstagramRepositoryImpl(ApiRepository):
     def convert_get_media_for_register(self, response: Response) -> dict:
         posts = []
         for business_discovery in response.json()["business_discovery"]["media"]["data"]:
-            business_discovery["posted_at"] = business_discovery.pop("timestamp")
-            business_discovery["sns_url"] = business_discovery.pop("media_url")
-            del business_discovery["media_product_type"]
-            posts.append(business_discovery)
+            if business_discovery.get("media_url"):
+                business_discovery["posted_at"] = business_discovery.pop("timestamp")
+                business_discovery["sns_url"] = business_discovery.pop("media_url")
+                del business_discovery["media_product_type"]
+                posts.append(business_discovery)
+            else:
+                continue
         return posts
 
     def convert_get_user_for_register(self, response: Response) -> dict:
