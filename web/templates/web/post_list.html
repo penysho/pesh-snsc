@@ -3,7 +3,7 @@
 <section>
   <div class="grid grid-cols-4 gap-8 p-8">
     {% for post in post_list %}
-    <a class="list-text-pc" href="{% url 'web:post_update' post.pk %}">
+    <a href="{% url 'web:post_update' post.pk %}">
       <img src="{{ post.medias.0.hosted_detail_url.url }}" />
     </a>
     {% endfor %}

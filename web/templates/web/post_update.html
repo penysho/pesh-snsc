@@ -1,5 +1,17 @@
 {% extends 'web/base.html' %} {% load static %} {% block main %}
 
-<section>{{ object.id }}</section>
+<section>
+  <div class="flex h-[calc(100vh_-_(var(--header-height)))] flex-row gap-8 px-16 py-8">
+    <div class="h-full basis-1/2">
+      <img class="h-full w-full object-cover" src="{{ object.medias.0.hosted_detail_url.url }}" />
+    </div>
+    <article class="flex h-full basis-1/2 flex-col gap-2">
+      <p>{{ object.id }}</p>
+      <div>{{ object.caption }}</div>
+      <div>いいね数: {{ object.like_count }}</div>
+      <div>コメント数: {{ object.comments_count }}</div>
+    </article>
+  </div>
+</section>
 
 {% endblock %}
