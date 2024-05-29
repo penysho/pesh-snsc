@@ -5,6 +5,17 @@ from web.models.snsc_base_model import SnscBaseModel
 
 
 class Post(SnscBaseModel):
+
+    class Status(models.TextChoices):
+        PRE_APPROVAL = "PRE", "未承認"
+        APPROVED = "APR", "承認"
+        REJECTED = "REJ", "却下"
+        DELETED = "DEL", "削除"
+        PENDING = "PND", "保留"
+        PUBLISHED = "PUB", "公開"
+        UNPUBLISHED = "UNP", "非公開"
+        ARCHIVED = "ARC", "アーカイブ"
+
     id = models.BigAutoField(primary_key=True, verbose_name="投稿識別子")
     sns = models.ForeignKey(
         Sns,
@@ -19,6 +30,12 @@ class Post(SnscBaseModel):
     like_count = models.IntegerField(blank=True, null=True, verbose_name="投稿いいね数")
     comments_count = models.IntegerField(
         blank=True, null=True, verbose_name="投稿コメント数"
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PRE_APPROVAL,
+        verbose_name="投稿ステータス",
     )
     caption = models.TextField(blank=True, null=True, verbose_name="投稿詳細文")
     permalink = models.URLField(max_length=500, verbose_name="投稿リンク")
