@@ -17,7 +17,7 @@ class PostRepositoryImpl(PostRepository):
         try:
             return Post.objects.prefetch_related(
                 Prefetch(
-                    "post_media",
+                    "post_medias",
                     queryset=PostMedia.objects.filter(is_active=True, list_order=0),
                     to_attr="medias",
                 )
