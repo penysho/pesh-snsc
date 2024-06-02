@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from web.models import (
     Post,
     PostMedia,
+    PostProduct,
     Site,
     SiteOwnership,
     Sns,
@@ -23,3 +24,4 @@ admin.site.register(SnsApiAccount)
 admin.site.register(SnsUserAccount)
 admin.site.register(Post)
 admin.site.register(PostMedia)
+admin.site.register(PostProduct)

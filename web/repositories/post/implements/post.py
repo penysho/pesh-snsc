@@ -6,20 +6,41 @@ from django.db.models import Prefetch
 from django.db.models.manager import BaseManager
 
 from web.components.common.media import get_media_extension_by_url
-from web.models import Post, PostMedia, Sns
+from web.models import Post, PostMedia, PostProduct, Sns
+from web.repositories.exceptions import DatabaseException
 from web.repositories.post.post import PostRepository
 
 
 class PostRepositoryImpl(PostRepository):
 
-    def fetch_posts_with_media(self, site_id: int) -> BaseManager[Post]:
-        return Post.objects.prefetch_related(
-            Prefetch(
-                "post_media",
-                queryset=PostMedia.objects.filter(is_active=True, list_order=0),
-                to_attr="medias",
-            )
-        ).filter(is_active=True, sns__site__id=site_id)
+    def fetch_posts_by_site_id(self, site_id: int) -> BaseManager[Post]:
+        try:
+            return Post.objects.prefetch_related(
+                Prefetch(
+                    "post_media",
+                    queryset=PostMedia.objects.filter(is_active=True, list_order=0),
+                    to_attr="medias",
+                )
+            ).filter(is_active=True, sns__site__id=site_id)
+        except Exception as e:
+            raise DatabaseException(e)
+
+    def fetch_post_by_id(self, id: int) -> BaseManager[Post]:
+        try:
+            return Post.objects.prefetch_related(
+                Prefetch(
+                    "post_medias",
+                    queryset=PostMedia.objects.filter(is_active=True),
+                    to_attr="medias",
+                ),
+                Prefetch(
+                    "post_products",
+                    queryset=PostProduct.objects.filter(is_active=True),
+                    to_attr="products",
+                ),
+            ).filter(is_active=True, id=id)
+        except Exception as e:
+            raise DatabaseException(e)
 
     def update_or_create_post_by_response(
         self, sns: Sns, response: dict[str, int]

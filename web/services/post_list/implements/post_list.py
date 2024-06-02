@@ -10,4 +10,4 @@ class PostListServiceImpl(PostListService):
         self.post_repository = post_repository
 
     def get_queryset(self, site_id: int) -> BaseManager[Post]:
-        return self.post_repository.fetch_posts_with_media(site_id=site_id)
+        return self.post_repository.fetch_posts_by_site_id(site_id=site_id)

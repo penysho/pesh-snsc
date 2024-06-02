@@ -2,12 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from core.session.implements.session import SnscSessionImpl
 from web.components.common.template import get_template_name
 from web.forms import PostUpdateForm
 from web.models import Post
 from web.repositories.post.implements.post import PostRepositoryImpl
 from web.services.post_update.implements.post_update import PostUpdateServiceImpl
+
+# from django.views import generic
 
 
 class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -18,5 +19,5 @@ class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_queryset(self):
         return PostUpdateServiceImpl(post_repository=PostRepositoryImpl()).get_queryset(
-            site_id=SnscSessionImpl(self.request.session).get_current_site_id()
+            post_id=self.kwargs["pk"]
         )
