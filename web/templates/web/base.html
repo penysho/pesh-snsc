@@ -53,6 +53,7 @@
       <main class="min-h-screen w-screen shrink grow basis-0 overflow-y-auto overflow-x-hidden bg-violet-50">
         {% block main %} {% endblock %}
       </main>
+
       <footer></footer>
     </div>
     <script>
@@ -65,6 +66,19 @@
           site.appendChild(siteNameInput)
           document.querySelector('form[name="change-site"]').submit()
         })
+      })
+
+      document.querySelectorAll(".form__item").forEach((formItem) => {
+        formItem.addEventListener("input", () => {
+          document.querySelector(".foot-form-banner").style.display = "flex"
+        })
+        formItem.addEventListener("change", () => {
+          document.querySelector(".foot-form-banner").style.display = "flex"
+        })
+      })
+
+      document.querySelector(".foot-form-banner__button--reset").addEventListener("click", () => {
+        document.querySelector(".foot-form-banner").style.display = "none"
       })
     </script>
   </body>
