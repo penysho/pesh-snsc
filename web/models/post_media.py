@@ -1,6 +1,6 @@
 from django.db import models
 
-from web.models.post import Post
+from web.models import Post
 from web.models.snsc_base_model import SnscBaseModel
 
 
