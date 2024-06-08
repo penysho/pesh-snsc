@@ -20,5 +20,5 @@ class PostProduct(SnscBaseModel):
 
     class Meta:
         db_table = "post_product"
-        verbose_name = "投稿関連商品"
-        verbose_name_plural = "投稿関連商品"
+        verbose_name = "投稿関連商品マスタ"
+        verbose_name_plural = "投稿関連商品マスタ"
