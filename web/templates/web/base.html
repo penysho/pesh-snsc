@@ -80,6 +80,18 @@
       document.querySelector(".foot-form-banner__button--reset").addEventListener("click", () => {
         document.querySelector(".foot-form-banner").style.display = "none"
       })
+
+      const mainModalOverlay = document.querySelector(".main-modal__overlay")
+      const mainModalWrapper = document.querySelector(".main-modal__wrapper")
+      document.querySelector(".wrapper-main-modal__button--open").addEventListener("click", () => {
+        mainModalOverlay.style.display = "block"
+      })
+
+      mainModalOverlay.addEventListener("click", (e) => {
+        if (!mainModalWrapper.contains(event.target)) {
+          mainModalOverlay.style.display = "none"
+        }
+      })
     </script>
   </body>
 </html>

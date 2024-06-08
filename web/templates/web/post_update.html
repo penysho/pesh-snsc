@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="flex basis-2/5 flex-col gap-4">
-        <div class="text-lg">{{ form.title }}</div>
+        <div>{{ form.title }}</div>
         <div class="h-32 overflow-y-auto">{{ object.caption }}</div>
         <h2 class="text-lg font-bold">詳細情報</h2>
         <div class="flex flex-col gap-2 px-2">
@@ -25,11 +25,14 @@
           <p>いいね数: {{ object.like_count }}</p>
           <p>コメント数: {{ object.comments_count }}</p>
         </div>
-        <h2 class="text-lg font-bold">投稿ステータス</h2>
+        <h2 class="text-lg font-bold">表示ステータス</h2>
         <div class="px-2">{{ form.status }}</div>
         <h2 class="text-lg font-bold">紐付け商品</h2>
         <div class="flex h-32 w-full gap-2 overflow-x-auto">
-          <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x150.png" />
+          <img
+            class="wrapper-main-modal__button--open aspect-square h-full object-cover"
+            src="https://placehold.jp/150x150.png"
+          />
           <img class="aspect-square h-full object-cover" src="https://placehold.jp/170x150.png" />
           <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x180.png" />
           <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x150.png" />
@@ -37,6 +40,44 @@
         </div>
       </div>
     </div>
+
+    <div class="main-modal__overlay fixed left-0 top-0 z-10 hidden h-screen w-screen bg-black/[.9]">
+      <div
+        class="main-modal__wrapper fixed left-1/2 top-1/2 h-1/2 w-1/2 -translate-x-2/4 -translate-y-2/4 flex-col gap-2 rounded-lg bg-white"
+      >
+        <h3 class="border-b border-gray-200 p-4 text-lg font-bold">投稿への商品の紐付け</h3>
+        <div class="px-6 py-2">
+          <label>投稿商品名</label>
+          <input type="text" />
+        </div>
+        <div class="px-6 py-2">
+          <label>投稿商品URL</label>
+          <input type="text" />
+        </div>
+        <div class="px-6 py-2">
+          <label>投稿画像URL</label>
+          <input type="text" />
+        </div>
+      </div>
+    </div>
+
+    <div class="fixed left-4 top-14 w-10">
+      <a href="{% url 'web:post_list' %}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-x-lg h-full w-full"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+          />
+        </svg>
+      </a>
+    </div>
+
     <div class="foot-form-banner fixed bottom-0 hidden h-12 w-screen items-center justify-end gap-2 bg-slate-900 px-8">
       <button class="foot-form-banner__button--submit rounded bg-sky-700 px-4 py-1 text-white" type="submit">
         変更を確定する

@@ -7,8 +7,8 @@ class PostUpdateForm(forms.ModelForm):
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": "投稿タイトルを入力してください。",
-                "class": "w-full text-lg form__item",
+                "placeholder": "タイトルを入力してください",
+                "class": "w-full text-xl form__item",
             }
         )
     )
