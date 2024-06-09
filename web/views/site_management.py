@@ -39,12 +39,8 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
             type=request.POST.get("sns-type")
         )
 
-        sns_user_account, created = service.update_or_create_sns_user_account(
-            sns_api_account
-        )
-        logger.info(
-            f"{'SNSユーザーを登録しました' if created else 'SNSユーザーを更新しました'}: {sns_user_account.name}"
-        )
+        sns_user_account = service.update_or_create_sns_user_account(sns_api_account)
+        logger.info(f"SNSユーザーを登録しました: {sns_user_account.name}")
 
         posts = service.update_or_create_post(sns_api_account)
         logger.info(f"SNS投稿を登録/更新しました: {len(posts)}件")

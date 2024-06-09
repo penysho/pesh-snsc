@@ -29,12 +29,12 @@ class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
             is_active=True, sns__site_id=site_id, sns__is_active=True
         )
 
-    def update_or_create_by_response(
+    def update_or_create_by_api_response(
         self, sns: Sns, response: dict[str, int]
-    ) -> tuple[SnsUserAccount, bool]:
-        sns_user_account, created = SnsUserAccount.objects.update_or_create(
+    ) -> SnsUserAccount:
+        sns_user_account, _ = SnsUserAccount.objects.update_or_create(
             sns=sns,
             defaults={**response},
             create_defaults={"sns": sns, "is_active": True, **response},
         )
-        return sns_user_account, created
+        return sns_user_account

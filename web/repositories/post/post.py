@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from django.db.models.manager import BaseManager
 
-from web.models import Post, PostMedia, Sns
+from web.models import Post, Sns
 
 
 class PostRepository(ABC):
@@ -16,13 +16,7 @@ class PostRepository(ABC):
         pass
 
     @abstractmethod
-    def update_or_create_post_by_response(
+    def update_or_create_post_with_media_by_api_response(
         self, sns: Sns, response: dict[str, int]
-    ) -> tuple[Post, bool]:
-        pass
-
-    @abstractmethod
-    def update_or_create_post_media_by_response(
-        self, sns: Sns, response: dict[str, int]
-    ) -> tuple[PostMedia, bool]:
+    ) -> Post:
         pass

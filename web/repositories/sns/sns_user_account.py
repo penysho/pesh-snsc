@@ -16,7 +16,7 @@ class SnsUserAccountRepository(ABC):
         pass
 
     @abstractmethod
-    def update_or_create_by_response(
+    def update_or_create_by_api_response(
         self, sns: Sns, response: dict[str, int]
-    ) -> tuple[SnsUserAccount, bool]:
+    ) -> SnsUserAccount:
         pass

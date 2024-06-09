@@ -20,6 +20,7 @@ class PostUpdateServiceImpl(PostUpdateService):
 
         post = form.save(commit=False)
         products = formset.save()
+        # https://docs.djangoproject.com/en/5.0/topics/db/queries/#additional-methods-to-handle-related-objects
         # PostとPostProductでformを分割しているためform.save_m2m()を使用せず、addで関係を登録する
         post.post_products.add(*products)
 

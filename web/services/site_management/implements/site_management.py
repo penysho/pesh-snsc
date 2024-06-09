@@ -52,12 +52,12 @@ class SiteManagementServiceImpl(SiteManagementService):
             sns_api_account
         )
         response = api_repository.fecth_user(sns_api_account)
-        sns_user_account, created = (
-            self.sns_user_account_repository.update_or_create_by_response(
+        sns_user_account = (
+            self.sns_user_account_repository.update_or_create_by_api_response(
                 sns=sns_api_account.sns, response=response
             )
         )
-        return sns_user_account, created
+        return sns_user_account
 
     def update_or_create_post(self, sns_api_account: SnsApiAccount) -> list[Post]:
         posts = []
@@ -66,11 +66,10 @@ class SiteManagementServiceImpl(SiteManagementService):
         )
         response = api_repository.fecth_media(sns_api_account)
         for media in response:
-            post, _ = self.post_repository.update_or_create_post_by_response(
-                sns=sns_api_account.sns, response=media
-            )
-            self.post_repository.update_or_create_post_media_by_response(
-                post=post, response=media
+            post = (
+                self.post_repository.update_or_create_post_with_media_by_api_response(
+                    sns=sns_api_account.sns, response=media
+                )
             )
             posts.append(post)
         return posts
