@@ -2,6 +2,7 @@ from io import BytesIO
 
 import requests
 from django.core.files import File
+from django.db import transaction
 from django.db.models import Prefetch
 from django.db.models.manager import BaseManager
 
@@ -45,53 +46,55 @@ class PostRepositoryImpl(PostRepository):
     def update_or_create_post_with_media_by_api_response(
         self, sns: Sns, response: dict[str, int]
     ) -> Post:
-        try:
-            post, _ = Post.objects.update_or_create(
-                sns_post_id=response["id"],
-                defaults={
-                    "title": response.get("title"),
-                    "like_count": response.get("like_count"),
-                    "comments_count": response.get("comments_count"),
-                    "caption": response.get("caption"),
-                    "permalink": response.get("permalink"),
-                },
-                create_defaults={
-                    "sns": sns,
-                    "is_active": True,
-                    "sns_post_id": response["id"],
-                    "title": response.get("title"),
-                    "like_count": response.get("like_count"),
-                    "comments_count": response.get("comments_count"),
-                    "caption": response.get("caption"),
-                    "permalink": response.get("permalink"),
-                    "posted_at": response["posted_at"],
-                },
-            )
-        except Exception as e:
-            raise DatabaseException(Post, e)
 
-        try:
-            sns_url = response["sns_url"]
-            file = File(
-                BytesIO(requests.get(sns_url).content),
-                name=f"{post.id}.{get_media_extension_by_url(sns_url)}",
-            )
-            PostMedia.objects.update_or_create(
-                post=post,
-                defaults={
-                    "type": response["media_type"],
-                    "sns_url": sns_url,
-                    "hosted_detail_url": file,
-                },
-                create_defaults={
-                    "post": post,
-                    "is_active": True,
-                    "type": response["media_type"],
-                    "sns_url": sns_url,
-                    "hosted_detail_url": file,
-                },
-            )
-        except Exception as e:
-            raise DatabaseException(PostMedia, e)
+        with transaction.atomic():
+            try:
+                post, _ = Post.objects.update_or_create(
+                    sns_post_id=response["id"],
+                    defaults={
+                        "title": response.get("title"),
+                        "like_count": response.get("like_count"),
+                        "comments_count": response.get("comments_count"),
+                        "caption": response.get("caption"),
+                        "permalink": response.get("permalink"),
+                    },
+                    create_defaults={
+                        "sns": sns,
+                        "is_active": True,
+                        "sns_post_id": response["id"],
+                        "title": response.get("title"),
+                        "like_count": response.get("like_count"),
+                        "comments_count": response.get("comments_count"),
+                        "caption": response.get("caption"),
+                        "permalink": response.get("permalink"),
+                        "posted_at": response["posted_at"],
+                    },
+                )
+            except Exception as e:
+                raise DatabaseException(Post, e)
 
-        return post
+            try:
+                sns_url = response["sns_url"]
+                file = File(
+                    BytesIO(requests.get(sns_url).content),
+                    name=f"{post.id}.{get_media_extension_by_url(sns_url)}",
+                )
+                PostMedia.objects.update_or_create(
+                    post=post,
+                    defaults={
+                        "type": response["media_type"],
+                        "sns_url": sns_url,
+                        "hosted_detail_url": file,
+                    },
+                    create_defaults={
+                        "post": post,
+                        "is_active": True,
+                        "type": response["media_type"],
+                        "sns_url": sns_url,
+                        "hosted_detail_url": file,
+                    },
+                )
+            except Exception as e:
+                raise DatabaseException(PostMedia, e)
+
+            return post

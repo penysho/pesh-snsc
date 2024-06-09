@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
@@ -9,7 +11,7 @@ from web.models import Post
 from web.repositories.post.implements.post import PostRepositoryImpl
 from web.services.post_update.implements.post_update import PostUpdateServiceImpl
 
-# from django.views import generic
+logger = logging.getLogger(__name__)
 
 
 class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -47,6 +49,10 @@ class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
         ).save_post_products(form=form, formset=formset)
 
         if not is_success:
+            logger.error(f"投稿への商品紐付けに失敗しました: {formset}")
+            logger.error(f"Formに関連したエラー: {formset.errors}")
+            logger.error(f"Formに関連しないエラー: {formset.non_form_errors()}")
             return super().form_invalid(formset)
 
+        logger.info(f"投稿への商品紐付けに成功しました: {formset}")
         return super().form_valid(form)
