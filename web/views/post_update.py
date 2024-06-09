@@ -38,18 +38,15 @@ class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def form_valid(self, form):
         """form_classのバリデーション成功後にformsetの処理を追加する"""
-
         formset = self.post_product_formset_class(
             self.request.POST or None,
         )
-        post = form.save(commit=False)
 
-        if not formset.is_valid():
+        is_success = PostUpdateServiceImpl(
+            post_repository=PostRepositoryImpl()
+        ).save_post_products(form=form, formset=formset)
+
+        if not is_success:
             return super().form_invalid(formset)
-
-        products = formset.save()
-        for product in products:
-            post.post_products.add(product)
-        form.save_m2m()
 
         return super().form_valid(form)
