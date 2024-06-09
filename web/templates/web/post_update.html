@@ -3,65 +3,118 @@
 <section>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="flex h-auto flex-row items-start gap-8 px-32 py-8">
+    <div class="flex h-auto flex-row items-start gap-8 px-16 py-8">
       <div class="flex basis-3/5 items-start gap-4">
         <div class="grid basis-1/5 grid-cols-1 gap-2">
-          <img class="h-auto w-full object-cover" src="{{ object.medias.0.hosted_detail_url.url }}" />
+          <img
+            class="h-auto w-full rounded-lg border border-gray-300 object-cover"
+            src="{{ object.medias.0.hosted_detail_url.url }}"
+          />
           <img class="h-auto w-full object-cover" src="https://placehold.jp/150x150.png" />
           <img class="h-auto w-full object-cover" src="https://placehold.jp/150x150.png" />
           <img class="h-auto w-full object-cover" src="https://placehold.jp/150x150.png" />
         </div>
         <div class="basis-4/5">
-          <img class="h-full w-full object-cover" src="{{ object.medias.0.hosted_detail_url.url }}" />
+          <img
+            class="h-full w-full rounded-lg border border-gray-300 object-cover"
+            src="{{ object.medias.0.hosted_detail_url.url }}"
+          />
         </div>
       </div>
+
       <div class="flex basis-2/5 flex-col gap-4">
-        <div>{{ form.title }}</div>
-        <div class="h-32 overflow-y-auto">{{ object.caption }}</div>
-        <h2 class="text-lg font-bold">詳細情報</h2>
-        <div class="flex flex-col gap-2 px-2">
-          <p>投稿日時: {{ object.posted_at }}</p>
-          <p>投稿番号: {{ object.id }}</p>
-          <p>いいね数: {{ object.like_count }}</p>
-          <p>コメント数: {{ object.comments_count }}</p>
+        <div class="flex flex-col gap-4 rounded-lg border border-gray-300 bg-white p-4 text-sm">
+          <div class="flex flex-col gap-1">
+            <h3>投稿タイトル</h3>
+            {{ form.title }}
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3>説明文</h3>
+            <div class="h-32 overflow-y-auto rounded-lg bg-gray-100 p-1">{{ object.caption }}</div>
+          </div>
         </div>
-        <h2 class="text-lg font-bold">表示ステータス</h2>
-        <div class="px-2">{{ form.status }}</div>
-        <h2 class="text-lg font-bold">紐付け商品</h2>
-        <div class="flex h-32 w-full gap-2 overflow-x-auto">
-          <img
-            class="wrapper-main-modal__button--open aspect-square h-full object-cover"
-            src="https://placehold.jp/150x150.png"
-          />
-          <img class="aspect-square h-full object-cover" src="https://placehold.jp/170x150.png" />
-          <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x180.png" />
-          <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x150.png" />
-          <img class="aspect-square h-full object-cover" src="https://placehold.jp/150x150.png" />
+
+        <div class="flex flex-col gap-4 rounded-lg border border-gray-300 bg-white p-4">
+          <h2 class="font-bold">表示ステータス</h2>
+          <div class="w-24 rounded-lg border-b border-gray-300 bg-gray-100 p-1 text-sm">{{ form.status }}</div>
+        </div>
+
+        <div class="flex flex-col gap-4 rounded-lg border border-gray-300 bg-white p-4">
+          <h2 class="font-bold">紐付け商品</h2>
+          <div class="flex flex-col gap-4 text-sm">
+            <button type="button" class="wrapper-main-modal__button--open w-32 text-sky-600">+ 商品を追加する</button>
+            <div class="flex h-32 w-full gap-2 overflow-x-auto">
+              {% for product in object.post_products.values %}
+              <img
+                class="aspect-square h-full rounded-lg border border-gray-300 object-cover"
+                src="{{ product.image_url }}"
+              />
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 rounded-lg border border-gray-300 bg-white p-4">
+          <h2 class="font-bold">詳細情報</h2>
+          <div class="flex flex-col gap-2 rounded-lg bg-gray-100 p-1 text-sm">
+            <div class="flex gap-2 py-2">
+              <h3 class="basis-1/5">投稿番号</h3>
+              <p class="basis-4/5">{{ object.id }}</p>
+            </div>
+            <div class="flex gap-2 py-2">
+              <h3 class="basis-1/5">投稿日時</h3>
+              <p class="basis-4/5">{{ object.posted_at }}</p>
+            </div>
+            <div class="flex gap-2 py-2">
+              <h3 class="basis-1/5">投稿リンク</h3>
+              <a class="basis-4/5" href="{{ object.permalink }}" target="_brank" rel="noopener noreferrer"
+                >{{ object.permalink }}</a
+              >
+            </div>
+            <div class="flex gap-2 py-2">
+              <h3 class="basis-1/5">いいね数</h3>
+              <p class="basis-4/5">{{ object.like_count }}</p>
+            </div>
+            <div class="flex gap-2 py-2">
+              <h3 class="basis-1/5">コメント数</h3>
+              <p class="basis-4/5">{{ object.comments_count }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="main-modal__overlay fixed left-0 top-0 z-10 hidden h-screen w-screen bg-black/[.9]">
       <div
-        class="main-modal__wrapper fixed left-1/2 top-1/2 h-1/2 w-1/2 -translate-x-2/4 -translate-y-2/4 flex-col gap-2 rounded-lg bg-white"
+        class="main-modal__wrapper fixed left-1/2 top-1/2 flex h-4/5 w-3/5 -translate-x-2/4 -translate-y-2/4 flex-col gap-8 overflow-y-auto rounded-lg bg-white p-8"
       >
-        <h3 class="border-b border-gray-200 p-4 text-lg font-bold">投稿への商品の紐付け</h3>
-        <div class="px-6 py-2">
-          <label>投稿商品名</label>
-          <input type="text" />
+        <h3 class="text-lg font-bold">投稿への商品の紐付け</h3>
+        {{ post_product_formset.management_form }} {% for post_product_form in post_product_formset %}
+        <div class="flex flex-col gap-4 rounded-lg border border-gray-300 px-4 py-4">
+          <div class="flex items-center">
+            <label class="basis-2/5">{{ post_product_form.name.label }}</label> {{ post_product_form.name }}
+          </div>
+          <div class="flex items-center">
+            <label class="basis-2/5">{{ post_product_form.page_url.label }}</label> {{ post_product_form.page_url }}
+          </div>
+          <div class="flex items-center">
+            <label class="basis-2/5">{{ post_product_form.image_url.label }}</label> {{ post_product_form.image_url }}
+          </div>
+          <div class="hidden">
+            {% if post_product_form.name and post_product_form.page_url and post_product_form.image_url %}
+            {{post_product_form.id.as_hidden}} {{ post_product_form.ORDER.as_hidden }} {% endif %}
+          </div>
+          {% if post_product_formset.can_delete %}
+          <div class="flex">
+            <label class="basis-2/5">{{ post_product_form.DELETE.label }}</label>{{ post_product_form.DELETE }}
+          </div>
+          {% endif %}
         </div>
-        <div class="px-6 py-2">
-          <label>投稿商品URL</label>
-          <input type="text" />
-        </div>
-        <div class="px-6 py-2">
-          <label>投稿画像URL</label>
-          <input type="text" />
-        </div>
+        {% endfor %}
       </div>
     </div>
 
-    <div class="fixed left-4 top-14 w-10">
+    <div class="fixed left-4 top-14 w-8">
       <a href="{% url 'web:post_list' %}">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -78,13 +131,34 @@
       </a>
     </div>
 
-    <div class="foot-form-banner fixed bottom-0 hidden h-12 w-screen items-center justify-end gap-2 bg-slate-900 px-8">
-      <button class="foot-form-banner__button--submit rounded bg-sky-700 px-4 py-1 text-white" type="submit">
-        変更を確定する
-      </button>
-      <button class="foot-form-banner__button--reset rounded bg-rose-700 px-4 py-1 text-white" type="reset">
-        取り消し
-      </button>
+    <div
+      class="foot-form-banner fixed bottom-0 z-50 hidden h-12 w-screen items-center justify-between bg-gray-950 px-16 text-sm"
+    >
+      <div class="flex items-center gap-2 text-white">
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-exclamation-triangle-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+            />
+          </svg>
+        </div>
+        <h3>未保存の変更</h3>
+      </div>
+      <div class="flex gap-2">
+        <button class="foot-form-banner__button--submit rounded bg-white px-2 py-1 text-gray-900" type="submit">
+          保存する
+        </button>
+        <button class="foot-form-banner__button--reset rounded bg-gray-700 px-2 py-1 text-white" type="reset">
+          取り消す
+        </button>
+      </div>
     </div>
   </form>
 </section>
