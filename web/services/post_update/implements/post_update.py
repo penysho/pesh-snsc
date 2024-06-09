@@ -20,7 +20,7 @@ class PostUpdateServiceImpl(PostUpdateService):
 
         post = form.save(commit=False)
         products = formset.save()
-        for product in products:
-            post.post_products.add(product)
+        # PostとPostProductでformを分割しているためform.save_m2m()を使用せず、addで関係を登録する
+        post.post_products.add(*products)
 
         return True
