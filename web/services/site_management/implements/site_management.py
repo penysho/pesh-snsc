@@ -51,7 +51,7 @@ class SiteManagementServiceImpl(SiteManagementService):
         api_repository = self.api_repository_factory.get_repository_by_sns_api_account(
             sns_api_account
         )
-        response = api_repository.fecth_user(sns_api_account)
+        response = api_repository.fetch_user(sns_api_account)
         sns_user_account = (
             self.sns_user_account_repository.update_or_create_by_api_response(
                 sns=sns_api_account.sns, response=response
@@ -64,12 +64,10 @@ class SiteManagementServiceImpl(SiteManagementService):
         api_repository = self.api_repository_factory.get_repository_by_sns_api_account(
             sns_api_account
         )
-        response = api_repository.fecth_media(sns_api_account)
-        for media in response:
-            post = (
-                self.post_repository.update_or_create_post_with_media_by_api_response(
-                    sns=sns_api_account.sns, response=media
-                )
+        post_dtos = api_repository.fetch_post(sns_api_account)
+        for post_dto in post_dtos:
+            post = self.post_repository.update_or_create_post_with_medias(
+                sns=sns_api_account.sns, post_dto=post_dto
             )
             posts.append(post)
         return posts

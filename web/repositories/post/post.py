@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 
 from django.db.models.manager import BaseManager
 
-from web.models import Post, Sns
+from web.dto.api import PostDto
+from web.models import Post, PostMedia, Sns
 
 
 class PostRepository(ABC):
@@ -16,7 +17,19 @@ class PostRepository(ABC):
         pass
 
     @abstractmethod
-    def update_or_create_post_with_media_by_api_response(
-        self, sns: Sns, response: dict[str, int]
+    def update_or_create_post_with_medias(
+        self,
+        sns: Sns,
+        post_dto: PostDto,
     ) -> Post:
+        pass
+
+    @abstractmethod
+    def update_or_create_post(self, sns: Sns, post_dto: PostDto) -> Post:
+        pass
+
+    @abstractmethod
+    def update_or_create_post_medias(
+        self, post: Post, post_dto: PostDto
+    ) -> list[PostMedia]:
         pass

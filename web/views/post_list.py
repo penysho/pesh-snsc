@@ -10,6 +10,7 @@ from web.services.post_list.implements.post_list import PostListServiceImpl
 class PostListView(LoginRequiredMixin, generic.ListView):
     template_name = get_template_name("post_list.html")
     context_object_name = "post_list"
+    ordering = "-posted_at"
 
     def get_queryset(self):
         queryset = PostListServiceImpl(
@@ -24,7 +25,3 @@ class PostListView(LoginRequiredMixin, generic.ListView):
             queryset = queryset.order_by(*ordering)
 
         return queryset
-
-    def get_ordering(self):
-        """Return the field or fields to use for ordering the queryset."""
-        return self.ordering

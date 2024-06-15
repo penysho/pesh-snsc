@@ -7,6 +7,7 @@ from django.db.models import Prefetch
 from django.db.models.manager import BaseManager
 
 from web.components.common.media import get_media_extension_by_url
+from web.dto.api import PostDto
 from web.models import Post, PostMedia, PostProduct, Sns
 from web.repositories.exceptions import DatabaseException
 from web.repositories.post.post import PostRepository
@@ -19,7 +20,7 @@ class PostRepositoryImpl(PostRepository):
             return Post.objects.prefetch_related(
                 Prefetch(
                     "post_medias",
-                    queryset=PostMedia.objects.filter(is_active=True, list_order=0),
+                    queryset=PostMedia.objects.filter(is_active=True),
                     to_attr="medias",
                 )
             ).filter(is_active=True, sns__site__id=site_id)
@@ -43,58 +44,71 @@ class PostRepositoryImpl(PostRepository):
         except Exception as e:
             raise DatabaseException(e)
 
-    def update_or_create_post_with_media_by_api_response(
-        self, sns: Sns, response: dict[str, int]
+    def update_or_create_post_with_medias(
+        self,
+        sns: Sns,
+        post_dto: PostDto,
     ) -> Post:
-
         with transaction.atomic():
-            try:
-                post, _ = Post.objects.update_or_create(
-                    sns_post_id=response["id"],
-                    defaults={
-                        "title": response.get("title"),
-                        "like_count": response.get("like_count"),
-                        "comments_count": response.get("comments_count"),
-                        "caption": response.get("caption"),
-                        "permalink": response.get("permalink"),
-                    },
-                    create_defaults={
-                        "sns": sns,
-                        "is_active": True,
-                        "sns_post_id": response["id"],
-                        "title": response.get("title"),
-                        "like_count": response.get("like_count"),
-                        "comments_count": response.get("comments_count"),
-                        "caption": response.get("caption"),
-                        "permalink": response.get("permalink"),
-                        "posted_at": response["posted_at"],
-                    },
-                )
-            except Exception as e:
-                raise DatabaseException(Post, e)
+            post = self.update_or_create_post(sns=sns, post_dto=post_dto)
+            self.update_or_create_post_medias(post=post, post_dto=post_dto)
+            return post
 
-            try:
-                sns_url = response["sns_url"]
+    def update_or_create_post(self, sns: Sns, post_dto: PostDto) -> Post:
+        try:
+            post, _ = Post.objects.update_or_create(
+                sns_post_id=post_dto.id,
+                defaults={
+                    "title": post_dto.title,
+                    "like_count": post_dto.like_count,
+                    "comments_count": post_dto.comments_count,
+                    "caption": post_dto.caption,
+                    "permalink": post_dto.permalink,
+                },
+                create_defaults={
+                    "sns": sns,
+                    "sns_post_id": post_dto.id,
+                    "title": post_dto.title,
+                    "like_count": post_dto.like_count,
+                    "comments_count": post_dto.comments_count,
+                    "caption": post_dto.caption,
+                    "permalink": post_dto.permalink,
+                    "posted_at": post_dto.posted_at,
+                },
+            )
+            return post
+        except Exception as e:
+            raise DatabaseException(Post, e)
+
+    def update_or_create_post_medias(
+        self, post: Post, post_dto: PostDto
+    ) -> list[PostMedia]:
+        try:
+            post_medias = []
+            # TODO: 画像がされた場合にPostMediaの切り詰めを行う
+            for i, post_media in enumerate(post_dto.post_media):
+                sns_url = post_media.sns_url
                 file = File(
                     BytesIO(requests.get(sns_url).content),
-                    name=f"{post.id}.{get_media_extension_by_url(sns_url)}",
+                    name=f"{post.id}_{i + 1}.{get_media_extension_by_url(sns_url)}",
                 )
-                PostMedia.objects.update_or_create(
-                    post=post,
+                post_media, _ = PostMedia.objects.update_or_create(
+                    hosted_detail_url=file,
                     defaults={
-                        "type": response["media_type"],
+                        "type": post_media.type,
                         "sns_url": sns_url,
                         "hosted_detail_url": file,
+                        "list_order": i + 1,
                     },
                     create_defaults={
                         "post": post,
-                        "is_active": True,
-                        "type": response["media_type"],
+                        "type": post_media.type,
                         "sns_url": sns_url,
                         "hosted_detail_url": file,
+                        "list_order": i + 1,
                     },
                 )
-            except Exception as e:
-                raise DatabaseException(PostMedia, e)
-
-            return post
+                post_medias.append(post_media)
+            return post_medias
+        except Exception as e:
+            raise DatabaseException(PostMedia, e)

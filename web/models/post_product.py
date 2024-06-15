@@ -15,10 +15,13 @@ class PostProduct(SnscBaseModel):
     page_url = models.URLField(max_length=1000, verbose_name="投稿関連商品ページのURL")
     image_url = models.URLField(max_length=1000, verbose_name="投稿関連商品画像のURL")
     list_order = models.PositiveSmallIntegerField(
-        default=0, verbose_name="一覧表示する際の優先度"
+        default=1, verbose_name="一覧表示する際の優先度"
     )
 
     class Meta:
         db_table = "post_product"
         verbose_name = "投稿関連商品マスタ"
         verbose_name_plural = "投稿関連商品マスタ"
+
+    def __str__(self):
+        return self.name

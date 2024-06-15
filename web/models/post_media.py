@@ -25,7 +25,7 @@ class PostMedia(SnscBaseModel):
         verbose_name="アプリケーションでホストされた詳細ページ用URL",
     )
     list_order = models.PositiveSmallIntegerField(
-        default=0, verbose_name="一覧表示する際の優先度"
+        default=1, verbose_name="一覧表示する際の優先度"
     )
 
     class Meta:
@@ -38,3 +38,6 @@ class PostMedia(SnscBaseModel):
                 fields=["post", "list_order"], name=f"uq_{db_table}_list_order"
             ),
         ]
+
+    def __str__(self):
+        return self.hosted_detail_url.url

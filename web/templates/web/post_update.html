@@ -6,10 +6,12 @@
     <div class="flex h-auto flex-row items-start gap-8 px-16 py-8">
       <div class="flex basis-3/5 items-start gap-4">
         <div class="grid basis-1/5 grid-cols-1 gap-2">
+          {% for media in object.medias %}
           <img
             class="h-auto w-full rounded-lg border border-gray-300 object-cover"
-            src="{{ object.medias.0.hosted_detail_url.url }}"
+            src="{{ media.hosted_detail_url.url }}"
           />
+          {% endfor %}
         </div>
         <div class="basis-4/5">
           <img
