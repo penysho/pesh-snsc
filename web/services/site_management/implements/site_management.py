@@ -47,24 +47,21 @@ class SiteManagementServiceImpl(SiteManagementService):
 
     def update_or_create_sns_user_account(
         self, sns_api_account: SnsApiAccount
-    ) -> tuple[SnsUserAccount, bool]:
+    ) -> SnsUserAccount:
         api_repository = self.api_repository_factory.get_repository_by_sns_api_account(
             sns_api_account
         )
-        response = api_repository.fetch_user(sns_api_account)
-        sns_user_account = (
-            self.sns_user_account_repository.update_or_create_by_api_response(
-                sns=sns_api_account.sns, response=response
-            )
+        return self.sns_user_account_repository.update_or_create(
+            sns=sns_api_account.sns,
+            sns_user_account_dto=api_repository.fetch_user(sns_api_account),
         )
-        return sns_user_account
 
-    def update_or_create_post(self, sns_api_account: SnsApiAccount) -> list[Post]:
+    def update_or_create_posts(self, sns_api_account: SnsApiAccount) -> list[Post]:
         posts = []
         api_repository = self.api_repository_factory.get_repository_by_sns_api_account(
             sns_api_account
         )
-        post_dtos = api_repository.fetch_post(sns_api_account)
+        post_dtos = api_repository.fetch_posts(sns_api_account)
         for post_dto in post_dtos:
             post = self.post_repository.update_or_create_post_with_medias(
                 sns=sns_api_account.sns, post_dto=post_dto

@@ -16,9 +16,9 @@ class SiteManagementService(ABC):
     @abstractmethod
     def update_or_create_sns_user_account(
         self, sns_api_account: SnsApiAccount
-    ) -> tuple[SnsUserAccount, bool]:
+    ) -> SnsUserAccount:
         pass
 
     @abstractmethod
-    def update_or_create_post(self, sns_api_account: SnsApiAccount) -> list[Post]:
+    def update_or_create_posts(self, sns_api_account: SnsApiAccount) -> list[Post]:
         pass

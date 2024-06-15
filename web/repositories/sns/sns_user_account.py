@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from django.db.models.manager import BaseManager
 
+from web.dto.api import SnsUserAccountDto
 from web.models import Sns, SnsUserAccount
 
 
@@ -16,7 +17,7 @@ class SnsUserAccountRepository(ABC):
         pass
 
     @abstractmethod
-    def update_or_create_by_api_response(
-        self, sns: Sns, response: dict[str, int]
+    def update_or_create(
+        self, sns: Sns, sns_user_account_dto: SnsUserAccountDto
     ) -> SnsUserAccount:
         pass

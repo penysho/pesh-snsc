@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.manager import BaseManager
 
+from web.dto.api import SnsUserAccountDto
 from web.models import Sns, SnsUserAccount
 from web.repositories.exceptions import DatabaseException, NotFoundObjectException
 from web.repositories.sns.sns_user_account import SnsUserAccountRepository
@@ -29,12 +30,16 @@ class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
             is_active=True, sns__site_id=site_id, sns__is_active=True
         )
 
-    def update_or_create_by_api_response(
-        self, sns: Sns, response: dict[str, int]
+    def update_or_create(
+        self, sns: Sns, sns_user_account_dto: SnsUserAccountDto
     ) -> SnsUserAccount:
         sns_user_account, _ = SnsUserAccount.objects.update_or_create(
             sns=sns,
-            defaults={**response},
-            create_defaults={"sns": sns, "is_active": True, **response},
+            defaults={**sns_user_account_dto.model_dump()},
+            create_defaults={
+                "sns": sns,
+                "is_active": True,
+                **sns_user_account_dto.model_dump(),
+            },
         )
         return sns_user_account

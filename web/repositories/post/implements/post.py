@@ -67,7 +67,6 @@ class PostRepositoryImpl(PostRepository):
                 },
                 create_defaults={
                     "sns": sns,
-                    "sns_post_id": post_dto.id,
                     "title": post_dto.title,
                     "like_count": post_dto.like_count,
                     "comments_count": post_dto.comments_count,
@@ -93,19 +92,17 @@ class PostRepositoryImpl(PostRepository):
                     name=f"{post.id}_{i + 1}.{get_media_extension_by_url(sns_url)}",
                 )
                 post_media, _ = PostMedia.objects.update_or_create(
-                    hosted_detail_url=file,
+                    post=post,
+                    list_order=i + 1,
                     defaults={
                         "type": post_media.type,
                         "sns_url": sns_url,
                         "hosted_detail_url": file,
-                        "list_order": i + 1,
                     },
                     create_defaults={
-                        "post": post,
                         "type": post_media.type,
                         "sns_url": sns_url,
                         "hosted_detail_url": file,
-                        "list_order": i + 1,
                     },
                 )
                 post_medias.append(post_media)

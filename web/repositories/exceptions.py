@@ -16,5 +16,4 @@ class NotFoundObjectException(ObjectDoesNotExist):
 class DatabaseException(RepositoryException):
     """Exception raised for database errors."""
 
-    def __init__(self, error: Exception):
-        super().__init__(f"Database error: {str(error)}")
+    pass

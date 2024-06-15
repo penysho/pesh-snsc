@@ -17,3 +17,13 @@ class PostDto(BaseModel):
     permalink: str
     posted_at: datetime
     post_media: list[PostMediaDto]
+
+
+class SnsUserAccountDto(BaseModel):
+    name: str | None
+    biography: str | None
+    follows_count: int | None
+    followers_count: int | None
+    post_count: int | None
+    profile_picture_url: str | None
+    website: str | None
