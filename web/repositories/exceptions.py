@@ -17,3 +17,9 @@ class DatabaseException(RepositoryException):
     """Exception raised for database errors."""
 
     pass
+
+
+class ApiException(RepositoryException):
+    """Exception raised for api errors."""
+
+    pass

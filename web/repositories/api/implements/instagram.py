@@ -1,18 +1,44 @@
-import requests
 from requests import Response
+from requests.exceptions import (ConnectionError, HTTPError, RequestException,
+                                 Timeout)
 
 from web.dto.api import PostDto, PostMediaDto, SnsUserAccountDto
 from web.models.sns_api_account import SnsApiAccount
 from web.repositories.api.api import ApiRepository
+from web.repositories.exceptions import ApiException
 
 
 class InstagramRepositoryImpl(ApiRepository):
 
     def fetch_user(self, sns_api_account: SnsApiAccount) -> SnsUserAccountDto:
-        return self.convert_user_dto(requests.get(self.create_fetch_user_url(sns_api_account)))
+        try:
+            with self._get_session() as session:
+                response = session.get(self.create_fetch_user_url(sns_api_account), timeout=(10, 10))
+                response.raise_for_status()
+        except ConnectionError as ce:
+            raise ApiException(ce)
+        except HTTPError as he:
+            raise ApiException(he)
+        except Timeout as te:
+            raise ApiException(te)
+        except RequestException as re:
+            raise ApiException(re)
+        return self.convert_user_dto(response)
 
     def fetch_posts(self, sns_api_account: SnsApiAccount) -> list[PostDto]:
-        return self.convert_posts_dto(requests.get(self.create_fetch_posts_url(sns_api_account)))
+        try:
+            with self._get_session() as session:
+                response = session.get(self.create_fetch_posts_url(sns_api_account), timeout=(10, 10))
+                response.raise_for_status()
+        except ConnectionError as ce:
+            raise ApiException(ce)
+        except HTTPError as he:
+            raise ApiException(he)
+        except Timeout as te:
+            raise ApiException(te)
+        except RequestException as re:
+            raise ApiException(re)
+        return self.convert_posts_dto(response)
 
     def create_fetch_user_url(self, sns_api_account: SnsApiAccount) -> str:
         return f"https://graph.facebook.com/{sns_api_account.version}/{sns_api_account.api_account_id}?fields=business_discovery.username({sns_api_account.sns.username}){{{"biography,followers_count,follows_count,media_count,name,profile_picture_url,website"}}}&access_token={sns_api_account.token}"

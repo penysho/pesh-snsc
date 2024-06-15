@@ -1,12 +1,28 @@
 from abc import ABC, abstractmethod
 
-from requests import Response
+import requests
+from requests import Response, Session
 
 from web.dto.api import PostDto, SnsUserAccountDto
 from web.models.sns_api_account import SnsApiAccount
 
 
 class ApiRepository(ABC):
+
+    def _get_session(self) -> Session:
+        session = Session()
+        session.mount(
+            "https://",
+            requests.adapters.HTTPAdapter(
+                max_retries=requests.adapters.Retry(
+                    connect=2,
+                    read=2,
+                    backoff_factor=1,
+                    status_forcelist=[500, 502, 503, 504],
+                ),
+            ),
+        )
+        return session
 
     @abstractmethod
     def fetch_user(self, sns_api_account: SnsApiAccount) -> SnsUserAccountDto:

@@ -57,14 +57,13 @@ class SiteManagementServiceImpl(SiteManagementService):
         )
 
     def update_or_create_posts(self, sns_api_account: SnsApiAccount) -> list[Post]:
-        posts = []
         api_repository = self.api_repository_factory.get_repository_by_sns_api_account(
             sns_api_account
         )
-        post_dtos = api_repository.fetch_posts(sns_api_account)
-        for post_dto in post_dtos:
-            post = self.post_repository.update_or_create_post_with_medias(
-                sns=sns_api_account.sns, post_dto=post_dto
+        posts = [
+            self.post_repository.update_or_create_post(
+                sns=sns_api_account.sns, post_dto=i
             )
-            posts.append(post)
+            for i in api_repository.fetch_posts(sns_api_account)
+        ]
         return posts

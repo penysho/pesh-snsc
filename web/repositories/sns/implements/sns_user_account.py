@@ -38,7 +38,6 @@ class SnsUserAccountRepositoryImpl(SnsUserAccountRepository):
             defaults={**sns_user_account_dto.model_dump()},
             create_defaults={
                 "sns": sns,
-                "is_active": True,
                 **sns_user_account_dto.model_dump(),
             },
         )
