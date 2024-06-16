@@ -42,7 +42,7 @@ class SiteManagementView(LoginRequiredMixin, generic.View):
         sns_user_account = service.update_or_create_sns_user_account(sns_api_account)
         logger.info(f"SNSユーザーを登録しました: {sns_user_account.name}")
 
-        posts = service.update_or_create_posts(sns_api_account)
+        posts = service.update_or_create_posts(sns_api_account=sns_api_account)
         logger.info(f"SNS投稿を登録/更新しました: {len(posts)}件")
 
         context = {"sns_user_account": sns_user_account, "posts": posts}

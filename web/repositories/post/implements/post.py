@@ -85,7 +85,7 @@ class PostRepositoryImpl(PostRepository):
         try:
             post_medias = []
             # TODO: 画像がされた場合にPostMediaの切り詰めを行う
-            for i, post_media in enumerate(post_dto.post_media):
+            for i, post_media in enumerate(post_dto.post_medias):
                 sns_url = post_media.sns_url
                 file = File(
                     BytesIO(requests.get(sns_url).content),

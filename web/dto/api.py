@@ -16,7 +16,7 @@ class PostDto(BaseModel):
     caption: str | None
     permalink: str
     posted_at: datetime
-    post_media: list[PostMediaDto]
+    post_medias: list[PostMediaDto]
 
 
 class SnsUserAccountDto(BaseModel):

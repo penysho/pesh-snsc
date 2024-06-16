@@ -61,7 +61,7 @@ class InstagramRepositoryImpl(ApiRepository):
     def convert_posts_dto(self, response: Response) -> list[PostDto]:
         posts = []
         for business_discovery in response.json()["business_discovery"]["media"]["data"]:
-            post_media_dto = [
+            post_media_dtos = [
                 PostMediaDto(
                     sns_url=business_discovery["media_url"],
                     type=business_discovery["media_type"],
@@ -69,7 +69,7 @@ class InstagramRepositoryImpl(ApiRepository):
             ] if business_discovery.get("media_url") else []
 
             if business_discovery.get("children"):
-                post_media_dto += [
+                post_media_dtos += [
                     PostMediaDto(
                         sns_url=i["media_url"],
                         type=i["media_type"],
@@ -84,7 +84,7 @@ class InstagramRepositoryImpl(ApiRepository):
                 caption=business_discovery.get("caption"),
                 permalink=business_discovery["permalink"],
                 posted_at=business_discovery["timestamp"],
-                post_media=post_media_dto,
+                post_medias=post_media_dtos,
             )
             posts.append(post_dto)
         return posts
