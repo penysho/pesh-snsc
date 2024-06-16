@@ -1,13 +1,21 @@
-{% extends 'web/base.html' %} {% load static %} {% block main %}
+{% extends 'web/base.html' %} {% load tag_library %} {% load static %} {% block main %}
 
 <section>
   <div class="grid grid-cols-4 gap-2 p-8">
     {% for post in post_list %}
     <a href="{% url 'web:post_update' post.pk %}">
+      {% if post.medias.0.hosted_detail_url.url|is_image %}
       <img
-        class="h-full w-full rounded-lg border border-gray-300 object-cover"
+        class="aspect-[5/6] w-full rounded-lg border border-gray-300 object-cover"
         src="{{ post.medias.0.hosted_detail_url.url }}"
       />
+      {% else %}
+      <video
+        class="aspect-[5/6] w-full rounded-lg border border-gray-300 object-cover"
+        preload="metadata"
+        src="{{ post.medias.0.hosted_detail_url.url }}"
+      ></video>
+      {% endif %}
     </a>
     {% endfor %}
   </div>

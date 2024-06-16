@@ -61,9 +61,10 @@ class SiteManagementServiceImpl(SiteManagementService):
             sns_api_account
         )
         posts = [
-            self.post_repository.update_or_create_post(
+            self.post_repository.update_or_create_post_with_medias(
                 sns=sns_api_account.sns, post_dto=i
             )
             for i in api_repository.fetch_posts(sns_api_account)
+            if i.post_media  # NOTE:投稿メディアが取得できない場合はは投稿の登録を行わない
         ]
         return posts
