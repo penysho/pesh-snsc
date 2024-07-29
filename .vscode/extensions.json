@@ -12,6 +12,8 @@
     "ms-python.isort",
     "knowsuchagency.pdm-task-provider",
     "mikoz.autoflake-extension",
+    // Go
+    "golang.go",
     // JavaScript
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
@@ -22,6 +24,8 @@
     "tamasfe.even-better-toml",
     // YAML
     "redhat.vscode-yaml",
+    "42Crunch.vscode-openapi",
+    "mermade.openapi-lint",
     // Graphql
     "graphql.vscode-graphql",
     // Markdown
@@ -31,6 +35,8 @@
     "davidanson.vscode-markdownlint",
     // AWS
     "aws-scripting-guy.cform",
+    "amazonwebservices.aws-toolkit-vscode",
+    "amazonwebservices.amazon-q-vscode",
     // Docker
     "ms-azuretools.vscode-docker",
     "ms-vscode-remote.remote-containers",

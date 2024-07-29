@@ -25,7 +25,8 @@
   // https://github.com/DavidAnson/markdownlint/blob/v0.19.0/doc/Rules.md#md025
   "markdownlint.config": {
     "no-duplicate-heading": false,
-    "no-inline-html": false
+    "no-inline-html": false,
+    "no-alt-text": false
   },
 
   // 以下CloudFormation用に要追加設定
@@ -93,5 +94,14 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
     "editor.formatOnSave": true
+  },
+
+  // https://github.com/golang/vscode-go/blob/master/docs/settings.md
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   }
 }
