@@ -35,7 +35,7 @@ class PostMedia(SnscBaseModel):
 
         constraints = [
             models.UniqueConstraint(
-                fields=["post", "list_order"], name=f"uq_{db_table}_list_order"
+                fields=["post", "list_order"], name=f"uq_{db_table}_post_list_order"
             ),
         ]
 

@@ -24,20 +24,16 @@ class Post(SnscBaseModel):
     sns_post_id = models.CharField(
         max_length=50, verbose_name="各SNSにおける投稿識別子"
     )
-    title = models.CharField(
-        max_length=50, blank=True, null=True, verbose_name="投稿タイトル"
-    )
-    like_count = models.IntegerField(blank=True, null=True, verbose_name="投稿いいね数")
-    comments_count = models.IntegerField(
-        blank=True, null=True, verbose_name="投稿コメント数"
-    )
+    title = models.CharField(max_length=50, blank=True, verbose_name="投稿タイトル")
+    like_count = models.PositiveIntegerField(verbose_name="投稿いいね数")
+    comments_count = models.PositiveIntegerField(verbose_name="投稿コメント数")
     status = models.CharField(
         max_length=10,
         choices=Status.choices,
         default=Status.PRE_APPROVAL,
         verbose_name="投稿ステータス",
     )
-    caption = models.TextField(blank=True, null=True, verbose_name="投稿詳細文")
+    caption = models.TextField(blank=True, verbose_name="投稿詳細文")
     permalink = models.URLField(max_length=500, verbose_name="投稿リンク")
     posted_at = models.DateTimeField(verbose_name="投稿日")
 
