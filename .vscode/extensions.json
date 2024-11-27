@@ -6,6 +6,7 @@
     "vadimcn.vscode-lldb",
     // Python
     "ms-python.python",
+    "ms-python.debugpy",
     "ms-python.vscode-pylance",
     "kevinrose.vsc-python-indent",
     "njpwerner.autodocstring",
@@ -13,6 +14,8 @@
     "ms-python.isort",
     "knowsuchagency.pdm-task-provider",
     "mikoz.autoflake-extension",
+    "ms-python.flake8",
+    "ms-python.black-formatter",
     // Go
     "golang.go",
     // JavaScript
@@ -29,6 +32,7 @@
     "mermade.openapi-lint",
     // Graphql
     "graphql.vscode-graphql",
+    "GraphQL.vscode-graphql-syntax",
     // Markdown
     "yzhang.markdown-all-in-one",
     "shd101wyy.markdown-preview-enhanced",
@@ -43,13 +47,15 @@
     "ms-vscode-remote.remote-containers",
     // Git
     "mhutchie.git-graph",
-    // 共通
+    "eamodio.gitlens",
+    // Common
     "ms-ceintl.vscode-language-pack-ja",
     "visualstudioexptteam.vscodeintellicode",
     "visualstudioexptteam.intellicode-api-usage-examples",
     "gruntfuggly.todo-tree",
     "aaron-bond.better-comments",
     "mikestead.dotenv",
-    "tombonnike.vscode-status-bar-format-toggle"
+    "tombonnike.vscode-status-bar-format-toggle",
+    "ms-vsliveshare.vsliveshare"
   ]
 }
